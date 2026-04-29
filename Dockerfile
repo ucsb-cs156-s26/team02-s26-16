@@ -39,7 +39,7 @@ RUN npm --version
 
 COPY . /home/app
 
-RUN mvn -B -Pproduction -DskipTests -f /home/app/pom.xml clean package
+RUN mvn -B -Pproduction -DskipTests -Dgcf.skip -f /home/app/pom.xml clean package
 
 RUN ["chmod", "+x", "/home/app/startup.sh"]
 ENTRYPOINT ["/home/app/startup.sh","/home/app/target/team01-1.0.0.jar"]
