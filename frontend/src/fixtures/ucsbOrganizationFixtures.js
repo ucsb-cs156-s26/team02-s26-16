@@ -1,10 +1,9 @@
 const ucsbOrganizationFixtures = {
   pfc: {
-
     orgCode: "tt",
     orgTranslationShort: "TT",
     orgTranslation: "Theta Tau",
-    inactive: true
+    inactive: true,
   },
   asianOrgs: [
     {
