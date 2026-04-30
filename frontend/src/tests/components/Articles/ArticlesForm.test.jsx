@@ -81,23 +81,22 @@ describe("ArticlesForm tests", () => {
   });
 
   test("that all form fields have correct test ids", async () => {
-  render(
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <ArticlesForm />
-      </Router>
-    </QueryClientProvider>,
-  );
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <ArticlesForm />
+        </Router>
+      </QueryClientProvider>,
+    );
 
-  expect(await screen.findByTestId(`${testId}-title`)).toBeInTheDocument();
-  expect(screen.getByTestId(`${testId}-url`)).toBeInTheDocument();
-  expect(screen.getByTestId(`${testId}-explanation`)).toBeInTheDocument();
-  expect(screen.getByTestId(`${testId}-email`)).toBeInTheDocument();
-  expect(screen.getByTestId(`${testId}-dateAdded`)).toBeInTheDocument();
-  expect(screen.getByTestId(`${testId}-submit`)).toBeInTheDocument();
-});
+    expect(await screen.findByTestId(`${testId}-title`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-url`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-explanation`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-email`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-dateAdded`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-submit`)).toBeInTheDocument();
+  });
 
-  
   test("that the correct validations are performed", async () => {
     render(
       <QueryClientProvider client={queryClient}>
