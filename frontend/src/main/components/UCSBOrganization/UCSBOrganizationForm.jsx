@@ -7,12 +7,14 @@ function UCSBOrganizationForm({
   submitAction,
   buttonLabel = "Create",
 }) {
+  const defaultValues = initialContents || {};
+
   // Stryker disable all
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({ defaultValues: initialContents || {} });
+  } = useForm({ defaultValues });
   // Stryker restore all
 
   const navigate = useNavigate();
@@ -21,22 +23,21 @@ function UCSBOrganizationForm({
 
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
-      {initialContents && (
-        <Form.Group className="mb-3">
-          <Form.Label htmlFor="orgCode">Org Code</Form.Label>
-          <Form.Control
-            data-testid={testIdPrefix + "-orgCode"}
-            id="orgCode"
-            type="text"
-            {...register("orgCode")}
-            value={initialContents.orgCode}
-            disabled
-          />
-        </Form.Group>
-      )}
+      <Form.Group className="mb-3">
+        <Form.Label htmlFor="orgCode">OrgCode</Form.Label>
+        <Form.Control
+          data-testid={testIdPrefix + "-orgCode"}
+          id="orgCode"
+          type="text"
+          {...register("orgCode")}
+          disabled
+        />
+      </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="orgTranslationShort">Short Organization Translation</Form.Label>
+        <Form.Label htmlFor="orgTranslationShort">
+          Short Organization Translation
+        </Form.Label>
         <Form.Control
           data-testid={testIdPrefix + "-orgTranslationShort"}
           id="orgTranslationShort"
@@ -95,7 +96,7 @@ function UCSBOrganizationForm({
         {buttonLabel}
       </Button>
       <Button
-        variant="Secondary"
+        variant="secondary"
         onClick={() => navigate(-1)}
         data-testid={testIdPrefix + "-cancel"}
       >
