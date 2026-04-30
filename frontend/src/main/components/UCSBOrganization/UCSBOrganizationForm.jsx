@@ -29,14 +29,14 @@ function UCSBOrganizationForm({
             id="orgCode"
             type="text"
             {...register("orgCode")}
-            // value={initialContents.orgCode}
+            value={initialContents.orgCode}
             disabled
           />
         </Form.Group>
       )}
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="orgTranslationShort">Name</Form.Label>
+        <Form.Label htmlFor="orgTranslationShort">Short Organization Translation</Form.Label>
         <Form.Control
           data-testid={testIdPrefix + "-orgTranslationShort"}
           id="orgTranslationShort"
@@ -56,7 +56,7 @@ function UCSBOrganizationForm({
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="orgTranslation">Description</Form.Label>
+        <Form.Label htmlFor="orgTranslation">Organization Name</Form.Label>
         <Form.Control
           data-testid={testIdPrefix + "-orgTranslation"}
           id="orgTranslation"
