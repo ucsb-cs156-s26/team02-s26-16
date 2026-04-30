@@ -26,10 +26,13 @@ describe("UCSBDiningCommonsMenuItemForm tests", () => {
       </Router>,
     );
 
-    await screen.findByText(/Dining Commons Code/);
-    await screen.findByText(/Name/);
-    await screen.findByText(/Station/);
-    await screen.findByText(/Create/);
+    expect(await screen.findByText(/Dining Commons Code/)).toBeInTheDocument();
+    expect(await screen.findByText(/Name/)).toBeInTheDocument();
+    expect(await screen.findByText(/Station/)).toBeInTheDocument();
+    expect(await screen.findByText(/Create/)).toBeInTheDocument();
+    expect(
+      screen.getByTestId("UCSBDiningCommonsMenuItemForm-submit"),
+    ).toBeInTheDocument();
   });
 
   test("renders correctly with initialContents", async () => {
@@ -64,7 +67,9 @@ describe("UCSBDiningCommonsMenuItemForm tests", () => {
 
     fireEvent.click(screen.getByText("Create"));
 
-    await screen.findByText(/Dining Commons Code is required./);
+    expect(
+      await screen.findByText(/Dining Commons Code is required./),
+    ).toBeInTheDocument();
     expect(screen.getByText(/Name is required./)).toBeInTheDocument();
     expect(screen.getByText(/Station is required./)).toBeInTheDocument();
   });
@@ -94,7 +99,7 @@ describe("UCSBDiningCommonsMenuItemForm tests", () => {
       },
     );
 
-    fireEvent.click(screen.getByText("Create"));
+    fireEvent.click(screen.getByTestId("UCSBDiningCommonsMenuItemForm-submit"));
 
     await waitFor(() => expect(mockSubmitAction).toHaveBeenCalled());
   });
