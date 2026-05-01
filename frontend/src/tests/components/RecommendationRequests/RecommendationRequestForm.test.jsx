@@ -79,6 +79,12 @@ describe("RecommendationRequestForm tests", () => {
       screen.getByText(/Professor email is required./),
     ).toBeInTheDocument();
     expect(screen.getByText(/Explanation is required./)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Date requested is required./),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Date needed is required./),
+    ).toBeInTheDocument();
   });
 
   test("No Error messages on good input", async () => {
@@ -147,5 +153,25 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(cancelButton);
 
     await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
+  });
+
+  test("done checkbox can be toggled", async () => {
+    const mockSubmitAction = vi.fn();
+
+    render(
+      <Router>
+        <RecommendationRequestForm submitAction={mockSubmitAction} />
+      </Router>,
+    );
+    await screen.findByTestId("RecommendationRequestForm-done");
+
+    const doneCheckbox = screen.getByTestId("RecommendationRequestForm-done");
+    expect(doneCheckbox).not.toBeChecked();
+
+    fireEvent.click(doneCheckbox);
+    expect(doneCheckbox).toBeChecked();
+
+    fireEvent.click(doneCheckbox);
+    expect(doneCheckbox).not.toBeChecked();
   });
 });
