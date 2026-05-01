@@ -1,4 +1,4 @@
-const ucsbOrganizationFixtures = {
+const UCSBOrganizationFixtures = {
   pfc: {
     orgCode: "tt",
     orgTranslationShort: "TT",
@@ -27,4 +27,4 @@ const ucsbOrganizationFixtures = {
   ],
 };
 
-export { ucsbOrganizationFixtures };
+export { UCSBOrganizationFixtures };
