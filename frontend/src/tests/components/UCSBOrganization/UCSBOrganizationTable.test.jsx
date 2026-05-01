@@ -34,7 +34,6 @@ describe("UCSBOrganizationTable tests", () => {
       </QueryClientProvider>,
     );
 
-    // Assert each header individually — no forEach
     expect(screen.getByText("orgCode")).toBeInTheDocument();
     expect(
       screen.getByText("ShortOrganizationTranslation"),
@@ -42,7 +41,16 @@ describe("UCSBOrganizationTable tests", () => {
     expect(screen.getByText("OrganizationTranslation")).toBeInTheDocument();
     expect(screen.getByText("Inactive")).toBeInTheDocument();
 
-    // Assert each field cell is absent individually — no forEach
+    // Use getByRole on the table to count rows — kills the testId string mutations
+    // because we're not relying on queryByTestId("") returning null
+    const table = screen.getByRole("table");
+    expect(table).toBeInTheDocument();
+
+    // Only the header row exists, no data rows
+    const rows = screen.getAllByRole("row");
+    expect(rows).toHaveLength(1);
+
+    // These are still worth keeping but the row count above is what kills the mutation
     expect(
       screen.queryByTestId(`${testId}-cell-row-0-col-orgCode`),
     ).not.toBeInTheDocument();
@@ -243,10 +251,10 @@ describe("UCSBOrganizationTable tests", () => {
     const currentUser = currentUserFixtures.adminUser;
 
     const axiosMock = new AxiosMockAdapter(axios);
+    axiosMock.onAny().reply(500); // reject everything by default
     axiosMock
       .onDelete("/api/UCSBOrganization")
       .reply(200, { message: "UCSBOrganization deleted" });
-
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -269,10 +277,11 @@ describe("UCSBOrganizationTable tests", () => {
 
     fireEvent.click(deleteButton);
 
-    // Assert length directly after click — kills ArrowFunction mutant
-    await waitFor(() => {
-      expect(axiosMock.history.delete.length).toBe(1);
-    });
+    // Wait for the mutation to fire, then assert outside waitFor
+    // so the waitFor block-body mutation can't swallow the assertion
+    await screen.findByTestId(`${testId}-cell-row-0-col-orgCode`);
+
+    expect(axiosMock.history.delete.length).toBe(1);
     expect(axiosMock.history.delete[0].params).toEqual({ orgCode: "vsa" });
     expect(axiosMock.history.delete[0].url).toBe("/api/UCSBOrganization");
   });
