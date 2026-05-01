@@ -10,9 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * This is a JPA entity that represents a HelpRequestEntity.
- */
+/** This is a JPA entity that represents a HelpRequestEntity. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
