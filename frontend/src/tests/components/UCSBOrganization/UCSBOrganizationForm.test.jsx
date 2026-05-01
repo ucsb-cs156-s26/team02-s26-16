@@ -43,24 +43,43 @@ describe("UCSBOrganizationForm tests", () => {
   });
 
   test("renders correctly when passing in initialContents", async () => {
-    // In your test file
     render(
-      <Router>
-        <UCSBOrganizationForm
-          initialContents={UCSBOrganizationFixtures.oneOrganization}
-        />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBOrganizationForm
+            initialContents={UCSBOrganizationFixtures.pfc}
+          />
+        </Router>
+      </QueryClientProvider>,
     );
 
     expect(await screen.findByText(/Create/)).toBeInTheDocument();
 
-    expectedHeaders.forEach((headerText) => {
-      const header = screen.getByText(headerText);
-      expect(header).toBeInTheDocument();
+    const orgCodeInput = screen.getByTestId(`${testId}-orgCode`);
+    const shortTranslationInput = screen.getByTestId(
+      `${testId}-orgTranslationShort`,
+    );
+    const orgTranslationInput = screen.getByTestId(`${testId}-orgTranslation`);
+    const inactiveInput = screen.getByTestId(`${testId}-inactive`);
+
+    // Use waitFor to allow React Hook Form to populate the values
+    await waitFor(() => {
+      expect(orgCodeInput).toHaveValue(UCSBOrganizationFixtures.pfc.orgCode);
     });
 
-    expect(await screen.findByTestId(`${testId}-orgCode`)).toBeInTheDocument();
-    expect(screen.getByText(`OrgCode`)).toBeInTheDocument();
+    expect(shortTranslationInput).toHaveValue(
+      UCSBOrganizationFixtures.pfc.orgTranslationShort,
+    );
+    expect(orgTranslationInput).toHaveValue(
+      UCSBOrganizationFixtures.pfc.orgTranslation,
+    );
+
+    // Note: select values are strings, so true becomes "true"
+    expect(inactiveInput).toHaveValue(
+      String(UCSBOrganizationFixtures.pfc.inactive),
+    );
+
+    expect(orgCodeInput).toBeDisabled();
   });
 
   test("that navigate(-1) is called when Cancel is clicked", async () => {
@@ -111,5 +130,43 @@ describe("UCSBOrganizationForm tests", () => {
     await waitFor(() => {
       expect(screen.getByText(/Max length 255 characters/)).toBeInTheDocument();
     });
+  });
+
+  test("calls submitAction when all fields are valid", async () => {
+    const submitAction = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBOrganizationForm submitAction={submitAction} />
+        </Router>
+      </QueryClientProvider>,
+    );
+
+    expect(await screen.findByTestId(`${testId}-submit`)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByTestId(`${testId}-orgTranslationShort`), {
+      target: { value: "ZBT" },
+    });
+    fireEvent.change(screen.getByTestId(`${testId}-orgTranslation`), {
+      target: { value: "Zeta Beta Tau" },
+    });
+    fireEvent.change(screen.getByTestId(`${testId}-inactive`), {
+      target: { value: "false" },
+    });
+
+    const submitButton = screen.getByTestId(`${testId}-submit`);
+    fireEvent.click(submitButton);
+
+    await waitFor(() => expect(submitAction).toHaveBeenCalled());
+
+    // orgCode is omitted because it is 'disabled' in your JSX
+    expect(submitAction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        orgTranslationShort: "ZBT",
+        orgTranslation: "Zeta Beta Tau",
+        inactive: "false",
+      }),
+      expect.anything(),
+    );
   });
 });
