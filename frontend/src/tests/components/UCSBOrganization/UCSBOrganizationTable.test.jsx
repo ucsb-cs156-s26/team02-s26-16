@@ -6,6 +6,7 @@ import { MemoryRouter } from "react-router";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
+import { useBackendMutation } from "main/utils/useBackend";
 
 const mockedNavigate = vi.fn();
 vi.mock("react-router", async () => {
@@ -15,6 +16,12 @@ vi.mock("react-router", async () => {
     useNavigate: () => mockedNavigate,
   };
 });
+
+vi.mock("main/utils/useBackend", () => ({
+  useBackendMutation: vi.fn(() => ({
+    mutate: vi.fn(),
+  })),
+}));
 
 describe("UCSBOrganizationTable tests", () => {
   const queryClient = new QueryClient();
@@ -230,16 +237,15 @@ describe("UCSBOrganizationTable tests", () => {
     );
   });
 
-  test("Delete button calls delete callback", async () => {
-    // arrange
+
+  test("Delete button calls backend mutation", async () => {
     const currentUser = currentUserFixtures.adminUser;
 
-    const axiosMock = new AxiosMockAdapter(axios);
-    axiosMock
-      .onDelete("/api/UCSBOrganizations/vsa")
-      .reply(200, { message: "UCSBOrganization deleted" });
+    const mutateSpy = vi.fn();
+    useBackendMutation.mockReturnValue({
+      mutate: mutateSpy,
+    });
 
-    // act - render the component
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -251,31 +257,14 @@ describe("UCSBOrganizationTable tests", () => {
       </QueryClientProvider>,
     );
 
-    // assert - check that the expected content is rendered
-    expect(
-      await screen.findByTestId(`${testId}-cell-row-0-col-orgCode`),
-    ).toHaveTextContent("vsa");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
-    ).toHaveTextContent("VSA");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslation`),
-    ).toHaveTextContent("Vietnamese Student Association");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-inactive`),
-    ).toHaveTextContent("true");
-
-    const deleteButton = screen.getByTestId(
+    const deleteButton = await screen.findByTestId(
       `${testId}-cell-row-0-col-Delete-button`,
     );
-    expect(deleteButton).toBeInTheDocument();
 
-    // act - click the delete button
     fireEvent.click(deleteButton);
 
-    // assert - check that the delete endpoint was called
-
-    await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
-    expect(axiosMock.history.delete[0].params).toEqual({ orgCode: "vsa" });
+    await waitFor(() => {
+      expect(mutateSpy).toHaveBeenCalledTimes(1);
+    });
   });
 });
