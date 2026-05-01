@@ -41,28 +41,12 @@ describe("UCSBOrganizationTable tests", () => {
     expect(screen.getByText("OrganizationTranslation")).toBeInTheDocument();
     expect(screen.getByText("Inactive")).toBeInTheDocument();
 
-    // Use getByRole on the table to count rows — kills the testId string mutations
-    // because we're not relying on queryByTestId("") returning null
-    const table = screen.getByRole("table");
-    expect(table).toBeInTheDocument();
-
-    // Only the header row exists, no data rows
     const rows = screen.getAllByRole("row");
     expect(rows).toHaveLength(1);
 
-    // These are still worth keeping but the row count above is what kills the mutation
-    expect(
-      screen.queryByTestId(`${testId}-cell-row-0-col-orgCode`),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId(`${testId}-cell-row-0-col-orgTranslation`),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId(`${testId}-cell-row-0-col-inactive`),
-    ).not.toBeInTheDocument();
+    // Removed queryByTestId checks — they can't be killed by Stryker because
+    // queryByTestId("") also returns null, making .not.toBeInTheDocument() pass either way.
+    // The row count above is sufficient to prove no data rows rendered.
   });
 
   test("Has the expected column headers, content and buttons for admin user", () => {
@@ -251,10 +235,11 @@ describe("UCSBOrganizationTable tests", () => {
     const currentUser = currentUserFixtures.adminUser;
 
     const axiosMock = new AxiosMockAdapter(axios);
-    axiosMock.onAny().reply(500); // reject everything by default
+    axiosMock.onAny().reply(500);
     axiosMock
       .onDelete("/api/UCSBOrganization")
       .reply(200, { message: "UCSBOrganization deleted" });
+
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -277,12 +262,14 @@ describe("UCSBOrganizationTable tests", () => {
 
     fireEvent.click(deleteButton);
 
-    // Wait for the mutation to fire, then assert outside waitFor
-    // so the waitFor block-body mutation can't swallow the assertion
-    await screen.findByTestId(`${testId}-cell-row-0-col-orgCode`);
+    // waitFor with a real timeout dependency — if the URL is wrong, onAny returns 500
+    // and the delete call errors, so history.delete stays empty and this times out
+    await waitFor(() => {
+      expect(axiosMock.history.delete.length).toBeGreaterThan(0);
+    });
 
     expect(axiosMock.history.delete.length).toBe(1);
-    expect(axiosMock.history.delete[0].params).toEqual({ orgCode: "vsa" });
     expect(axiosMock.history.delete[0].url).toBe("/api/UCSBOrganization");
+    expect(axiosMock.history.delete[0].params).toEqual({ orgCode: "vsa" });
   });
 });
