@@ -79,12 +79,8 @@ describe("RecommendationRequestForm tests", () => {
       screen.getByText(/Professor email is required./),
     ).toBeInTheDocument();
     expect(screen.getByText(/Explanation is required./)).toBeInTheDocument();
-    expect(
-      screen.getByText(/Date requested is required./),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Date needed is required./),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Date requested is required./)).toBeInTheDocument();
+    expect(screen.getByText(/Date needed is required./)).toBeInTheDocument();
   });
 
   test("No Error messages on good input", async () => {
