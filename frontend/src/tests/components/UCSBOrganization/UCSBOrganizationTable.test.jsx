@@ -18,26 +18,11 @@ vi.mock("react-router", async () => {
 
 describe("UCSBOrganizationTable tests", () => {
   const queryClient = new QueryClient();
-
-  const expectedHeaders = [
-    "orgCode",
-    "ShortOrganizationTranslation",
-    "OrganizationTranslation",
-    "Inactive",
-  ];
-  const expectedFields = [
-    "orgCode",
-    "orgTranslationShort",
-    "orgTranslation",
-    "inactive",
-  ];
   const testId = "UCSBOrganizationTable";
 
   test("renders empty table correctly", () => {
-    // arrange
     const currentUser = currentUserFixtures.adminUser;
 
-    // act
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -49,25 +34,32 @@ describe("UCSBOrganizationTable tests", () => {
       </QueryClientProvider>,
     );
 
-    // assert
-    expectedHeaders.forEach((headerText) => {
-      const header = screen.getByText(headerText);
-      expect(header).toBeInTheDocument();
-    });
+    // Assert each header individually — no forEach
+    expect(screen.getByText("orgCode")).toBeInTheDocument();
+    expect(
+      screen.getByText("ShortOrganizationTranslation"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("OrganizationTranslation")).toBeInTheDocument();
+    expect(screen.getByText("Inactive")).toBeInTheDocument();
 
-    expectedFields.forEach((field) => {
-      const fieldElement = screen.queryByTestId(
-        `${testId}-cell-row-0-col-${field}`,
-      );
-      expect(fieldElement).not.toBeInTheDocument();
-    });
+    // Assert each field cell is absent individually — no forEach
+    expect(
+      screen.queryByTestId(`${testId}-cell-row-0-col-orgCode`),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId(`${testId}-cell-row-0-col-orgTranslation`),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId(`${testId}-cell-row-0-col-inactive`),
+    ).not.toBeInTheDocument();
   });
 
   test("Has the expected column headers, content and buttons for admin user", () => {
-    // arrange
     const currentUser = currentUserFixtures.adminUser;
 
-    // act
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -79,17 +71,29 @@ describe("UCSBOrganizationTable tests", () => {
       </QueryClientProvider>,
     );
 
-    // assert
-    expectedHeaders.forEach((headerText) => {
-      const header = screen.getByText(headerText);
-      expect(header).toBeInTheDocument();
-    });
+    // Headers — explicit, no forEach
+    expect(screen.getByText("orgCode")).toBeInTheDocument();
+    expect(
+      screen.getByText("ShortOrganizationTranslation"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("OrganizationTranslation")).toBeInTheDocument();
+    expect(screen.getByText("Inactive")).toBeInTheDocument();
 
-    expectedFields.forEach((field) => {
-      const header = screen.getByTestId(`${testId}-cell-row-0-col-${field}`);
-      expect(header).toBeInTheDocument();
-    });
+    // Fields present — explicit, no forEach
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgCode`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslation`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-inactive`),
+    ).toBeInTheDocument();
 
+    // Row 0 content
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-orgCode`),
     ).toHaveTextContent("vsa");
@@ -103,6 +107,7 @@ describe("UCSBOrganizationTable tests", () => {
       screen.getByTestId(`${testId}-cell-row-0-col-inactive`),
     ).toHaveTextContent("true");
 
+    // Row 1 content
     expect(
       screen.getByTestId(`${testId}-cell-row-1-col-orgCode`),
     ).toHaveTextContent("csu");
@@ -115,6 +120,14 @@ describe("UCSBOrganizationTable tests", () => {
     expect(
       screen.getByTestId(`${testId}-cell-row-1-col-inactive`),
     ).toHaveTextContent("true");
+
+    // Row 2 content (inactive: false — different value kills mutations on "true")
+    expect(
+      screen.getByTestId(`${testId}-cell-row-2-col-orgCode`),
+    ).toHaveTextContent("nsu");
+    expect(
+      screen.getByTestId(`${testId}-cell-row-2-col-inactive`),
+    ).toHaveTextContent("false");
 
     const editButton = screen.getByTestId(
       `${testId}-cell-row-0-col-Edit-button`,
@@ -130,10 +143,8 @@ describe("UCSBOrganizationTable tests", () => {
   });
 
   test("Has the expected column headers, content for ordinary user", () => {
-    // arrange
     const currentUser = currentUserFixtures.userOnly;
 
-    // act
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -145,16 +156,27 @@ describe("UCSBOrganizationTable tests", () => {
       </QueryClientProvider>,
     );
 
-    // assert
-    expectedHeaders.forEach((headerText) => {
-      const header = screen.getByText(headerText);
-      expect(header).toBeInTheDocument();
-    });
+    // Headers — explicit, no forEach
+    expect(screen.getByText("orgCode")).toBeInTheDocument();
+    expect(
+      screen.getByText("ShortOrganizationTranslation"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("OrganizationTranslation")).toBeInTheDocument();
+    expect(screen.getByText("Inactive")).toBeInTheDocument();
 
-    expectedFields.forEach((field) => {
-      const header = screen.getByTestId(`${testId}-cell-row-0-col-${field}`);
-      expect(header).toBeInTheDocument();
-    });
+    // Fields present — explicit, no forEach
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgCode`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslation`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-inactive`),
+    ).toBeInTheDocument();
 
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-orgCode`),
@@ -187,10 +209,8 @@ describe("UCSBOrganizationTable tests", () => {
   });
 
   test("Edit button navigates to the edit page", async () => {
-    // arrange
     const currentUser = currentUserFixtures.adminUser;
 
-    // act - render the component
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -202,44 +222,31 @@ describe("UCSBOrganizationTable tests", () => {
       </QueryClientProvider>,
     );
 
-    // assert - check that the expected content is rendered
     expect(
       await screen.findByTestId(`${testId}-cell-row-0-col-orgCode`),
     ).toHaveTextContent("vsa");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
-    ).toHaveTextContent("VSA");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslation`),
-    ).toHaveTextContent("Vietnamese Student Association");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-inactive`),
-    ).toHaveTextContent("true");
 
     const editButton = screen.getByTestId(
       `${testId}-cell-row-0-col-Edit-button`,
     );
     expect(editButton).toBeInTheDocument();
 
-    // act - click the edit button
     fireEvent.click(editButton);
 
-    // assert - check that the navigate function was called with the expected path
-    await waitFor(() =>
-      expect(mockedNavigate).toHaveBeenCalledWith("/UCSBOrganization/edit/vsa"),
-    );
+    // Use toHaveBeenCalledWith directly — not inside waitFor arrow
+    // This kills the ArrowFunction mutant on waitFor
+    expect(mockedNavigate).toHaveBeenCalledWith("/UCSBOrganization/edit/vsa");
+    expect(mockedNavigate).toHaveBeenCalledTimes(1);
   });
 
   test("Delete button calls delete callback", async () => {
-    // arrange
     const currentUser = currentUserFixtures.adminUser;
 
     const axiosMock = new AxiosMockAdapter(axios);
     axiosMock
-      .onDelete("/api/UCSBOrganizations/vsa")
+      .onDelete("/api/UCSBOrganization")
       .reply(200, { message: "UCSBOrganization deleted" });
 
-    // act - render the component
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
@@ -251,31 +258,22 @@ describe("UCSBOrganizationTable tests", () => {
       </QueryClientProvider>,
     );
 
-    // assert - check that the expected content is rendered
     expect(
       await screen.findByTestId(`${testId}-cell-row-0-col-orgCode`),
     ).toHaveTextContent("vsa");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
-    ).toHaveTextContent("VSA");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslation`),
-    ).toHaveTextContent("Vietnamese Student Association");
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-inactive`),
-    ).toHaveTextContent("true");
 
     const deleteButton = screen.getByTestId(
       `${testId}-cell-row-0-col-Delete-button`,
     );
     expect(deleteButton).toBeInTheDocument();
 
-    // act - click the delete button
     fireEvent.click(deleteButton);
 
-    // assert - check that the delete endpoint was called
-
-    await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+    // Assert length directly after click — kills ArrowFunction mutant
+    await waitFor(() => {
+      expect(axiosMock.history.delete.length).toBe(1);
+    });
     expect(axiosMock.history.delete[0].params).toEqual({ orgCode: "vsa" });
+    expect(axiosMock.history.delete[0].url).toBe("/api/UCSBOrganization");
   });
 });
