@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s26/team02-s26-16
 owner: ucsb-cs156-s26
 repo_name: team02-s26-16
-pull_requests: [{"author":{"id":"U_kgDOCusDGg","is_bot":false,"login":"ikeacat2","name":"Ivy Holiday"},"headRefName":"issue_24","number":85,"title":"Issue #24: Copy Placeholders for RecommendationRequest pages; add to App.js/AppNavbar.js","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/85"}]
+pull_requests: [{"author":{"id":"U_kgDOCuipXA","is_bot":false,"login":"nikitahuynh","name":""},"headRefName":"nh-UCSBOrganization-create-table","number":86,"title":"Nh ucsb organization create table","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/86"},{"author":{"id":"U_kgDOCusDGg","is_bot":false,"login":"ikeacat2","name":"Ivy Holiday"},"headRefName":"issue_24","number":85,"title":"Issue #24: Copy Placeholders for RecommendationRequest pages; add to App.js/AppNavbar.js","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/85"}]
