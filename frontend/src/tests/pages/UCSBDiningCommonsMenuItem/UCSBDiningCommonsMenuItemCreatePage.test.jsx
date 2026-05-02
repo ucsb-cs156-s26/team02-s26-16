@@ -58,7 +58,9 @@ describe("UCSBDiningCommonsMenuItemCreatePage tests", () => {
       </QueryClientProvider>,
     );
 
-    await screen.findByText("Create New UCSBDiningCommonsMenuItem");
+    expect(
+      await screen.findByText("Create New UCSBDiningCommonsMenuItem"),
+    ).toBeInTheDocument();
   });
 
   test("on submit, makes request to backend and redirects", async () => {

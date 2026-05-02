@@ -23,9 +23,12 @@ export default function UCSBDiningCommonsMenuItemCreatePage({
     );
   };
 
-  const mutation = useBackendMutation(objectToAxiosParams, { onSuccess }, [
-    "/api/UCSBDiningCommonsMenuItem/all",
-  ]);
+  const mutation = useBackendMutation(
+    objectToAxiosParams,
+    { onSuccess },
+    // Stryker disable next-line all : hard to set up test for caching
+    ["/api/UCSBDiningCommonsMenuItem/all"],
+  );
 
   const { isSuccess } = mutation;
 
