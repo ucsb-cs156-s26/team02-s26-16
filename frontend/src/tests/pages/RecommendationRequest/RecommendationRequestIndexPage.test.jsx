@@ -70,7 +70,7 @@ describe("RecommendationRequestIndexPage tests", () => {
     });
     const button = screen.getByText(/Create Recommendation Request/);
     expect(button).toHaveAttribute("href", "/recommendationrequest/create");
-    expect(button).toHaveClass("btn-primary");
+    expect(button).toHaveAttribute("style", "float: right;");
   });
 
   test("renders three recommendation requests correctly for regular user", async () => {
@@ -99,14 +99,22 @@ describe("RecommendationRequestIndexPage tests", () => {
       "4",
     );
 
-    const createButton = screen.queryByText("Create Recommendation Request");
-    expect(createButton).not.toBeInTheDocument();
+    const createRecommendationRequestButton = screen.queryByText(
+      "Create Recommendation Request",
+    );
+    expect(createRecommendationRequestButton).not.toBeInTheDocument();
 
     const requesterEmail = screen.getByText("iholiday@ucsb.edu");
     expect(requesterEmail).toBeInTheDocument();
 
-    // Verify the heading is correct
-    expect(screen.getByText("Recommendation Requests")).toBeInTheDocument();
+    const explanation = screen.getByText("Summer research");
+    expect(explanation).toBeInTheDocument();
+
+    expect(
+      screen.getByText("Index page not yet implemented"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Create")).toBeInTheDocument();
+    expect(screen.getByText("Edit")).toBeInTheDocument();
 
     // for non-admin users, details button is visible, but the edit and delete buttons should not be visible
     expect(
@@ -147,28 +155,6 @@ describe("RecommendationRequestIndexPage tests", () => {
     restoreConsole();
   });
 
-  test("does not render Create button for regular user", async () => {
-    setupUserOnly();
-    axiosMock
-      .onGet("/api/recommendationrequests/all")
-      .reply(200, recommendationRequestFixtures.threeRecommendationRequests);
-
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestIndexPage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText("Recommendation Requests")).toBeInTheDocument();
-    });
-
-    const createButton = screen.queryByText("Create Recommendation Request");
-    expect(createButton).not.toBeInTheDocument();
-  });
-
   test("what happens when you click delete, admin", async () => {
     setupAdminUser();
 
@@ -177,7 +163,7 @@ describe("RecommendationRequestIndexPage tests", () => {
       .reply(200, recommendationRequestFixtures.threeRecommendationRequests);
     axiosMock
       .onDelete("/api/recommendationrequests")
-      .reply(200, { message: "Recommendation request deleted" });
+      .reply(200, "Recommendation request with id 2 was deleted");
 
     render(
       <QueryClientProvider client={queryClient}>
@@ -190,23 +176,32 @@ describe("RecommendationRequestIndexPage tests", () => {
     await waitFor(() => {
       expect(
         screen.getByTestId(`${testId}-cell-row-0-col-id`),
-      ).toHaveTextContent("2");
+      ).toBeInTheDocument();
     });
 
-    expect(
-      screen.getByTestId(`${testId}-cell-row-0-col-Delete-button`),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent(
+      "2",
+    );
 
-    const deleteButton = screen.getByTestId(
+    const deleteButton = await screen.findByTestId(
       `${testId}-cell-row-0-col-Delete-button`,
     );
 
+    expect(deleteButton).toBeInTheDocument();
+
     fireEvent.click(deleteButton);
 
-    await waitFor(() =>
-      expect(axiosMock.history.delete.length).toBeGreaterThanOrEqual(1),
-    );
+    await waitFor(() => {
+      expect(mockToast).toBeCalledWith(
+        "Recommendation request with id 2 was deleted",
+      );
+    });
 
-    expect(mockToast).toBeCalledWith("Recommendation request deleted");
+    await waitFor(() => {
+      expect(axiosMock.history.delete.length).toBe(1);
+    });
+
+    expect(axiosMock.history.delete[0].url).toBe("/api/recommendationrequests");
+    expect(axiosMock.history.delete[0].params).toEqual({ id: 2 });
   });
 });

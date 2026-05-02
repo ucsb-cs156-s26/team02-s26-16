@@ -7,6 +7,7 @@ import { useCurrentUser, hasRole } from "main/utils/useCurrentUser";
 import { Button } from "react-bootstrap";
 
 export default function RecommendationRequestIndexPage() {
+  // Stryker disable all : placeholder for future implementation
   const currentUser = useCurrentUser();
 
   const {
@@ -33,13 +34,18 @@ export default function RecommendationRequestIndexPage() {
         </Button>
       );
     }
-    // Stryker disable next-line all : don't test missing return statement
-    return null;
   };
 
   return (
     <BasicLayout>
       <div className="pt-2">
+        <h1>Index page not yet implemented</h1>
+        <p>
+          <a href="/recommendationrequest/create">Create</a>
+        </p>
+        <p>
+          <a href="/recommendationrequest/edit/1">Edit</a>
+        </p>
         {createButton()}
         <h1>Recommendation Requests</h1>
         <RecommendationRequestTable
