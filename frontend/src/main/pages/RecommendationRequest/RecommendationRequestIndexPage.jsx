@@ -33,6 +33,8 @@ export default function RecommendationRequestIndexPage() {
         </Button>
       );
     }
+    // Stryker disable next-line all : don't test missing return statement
+    return null;
   };
 
   return (

@@ -25,9 +25,13 @@ describe("RecommendationRequestIndexPage tests", () => {
 
   const testId = "RecommendationRequestTable";
 
-  const setupUserOnly = () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
     axiosMock.reset();
     axiosMock.resetHistory();
+  });
+
+  const setupUserOnly = () => {
     axiosMock
       .onGet("/api/currentUser")
       .reply(200, apiCurrentUserFixtures.userOnly);
@@ -37,8 +41,6 @@ describe("RecommendationRequestIndexPage tests", () => {
   };
 
   const setupAdminUser = () => {
-    axiosMock.reset();
-    axiosMock.resetHistory();
     axiosMock
       .onGet("/api/currentUser")
       .reply(200, apiCurrentUserFixtures.adminUser);
@@ -68,7 +70,7 @@ describe("RecommendationRequestIndexPage tests", () => {
     });
     const button = screen.getByText(/Create Recommendation Request/);
     expect(button).toHaveAttribute("href", "/recommendationrequest/create");
-    expect(button).toHaveAttribute("style", "float: right;");
+    expect(button).toHaveClass("btn-primary");
   });
 
   test("renders three recommendation requests correctly for regular user", async () => {
@@ -102,6 +104,9 @@ describe("RecommendationRequestIndexPage tests", () => {
 
     const requesterEmail = screen.getByText("iholiday@ucsb.edu");
     expect(requesterEmail).toBeInTheDocument();
+
+    // Verify the heading is correct
+    expect(screen.getByText("Recommendation Requests")).toBeInTheDocument();
 
     // for non-admin users, details button is visible, but the edit and delete buttons should not be visible
     expect(
@@ -140,6 +145,28 @@ describe("RecommendationRequestIndexPage tests", () => {
       "Error communicating with backend via GET on /api/recommendationrequests/all",
     );
     restoreConsole();
+  });
+
+  test("does not render Create button for regular user", async () => {
+    setupUserOnly();
+    axiosMock
+      .onGet("/api/recommendationrequests/all")
+      .reply(200, recommendationRequestFixtures.threeRecommendationRequests);
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <RecommendationRequestIndexPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("Recommendation Requests")).toBeInTheDocument();
+    });
+
+    const createButton = screen.queryByText("Create Recommendation Request");
+    expect(createButton).not.toBeInTheDocument();
   });
 
   test("what happens when you click delete, admin", async () => {
