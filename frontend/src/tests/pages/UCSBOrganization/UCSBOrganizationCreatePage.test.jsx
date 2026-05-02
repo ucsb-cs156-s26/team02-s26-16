@@ -60,7 +60,7 @@ describe("UCSBOrganizationCreatePage tests", () => {
     });
   });
 
-  test("on submit, makes request to backend, and redirects to /UCSBOrganizations", async () => {
+  test("on submit, makes request to backend, and redirects to /UCSBOrganization", async () => {
     const queryClient = new QueryClient();
     const USCBOrganization = {
       orgCode: "vsa",
@@ -70,7 +70,7 @@ describe("UCSBOrganizationCreatePage tests", () => {
     };
 
     axiosMock
-      .onPost("/api/UCSBOrganizations/post")
+      .onPost("/api/UCSBOrganization/post")
       .reply(202, USCBOrganization);
 
     render(
@@ -107,7 +107,7 @@ describe("UCSBOrganizationCreatePage tests", () => {
     fireEvent.change(orgTranslationInput, {
       target: { value: "Vietamese Student Assocation" },
     });
-    fireEvent.change(inactiveInput, { target: { value: "false" } });
+    fireEvent.change(inactiveInput, { target: { value: false } });
     fireEvent.click(createButton);
 
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
@@ -123,6 +123,6 @@ describe("UCSBOrganizationCreatePage tests", () => {
     expect(mockToast).toBeCalledWith(
       "New UCSBOrganization Created - orgCode: vsa orgTranslation: Vietamese Student Assocation",
     );
-    expect(mockNavigate).toBeCalledWith({ to: "/UCSBOrganizations" });
+    expect(mockNavigate).toBeCalledWith({ to: "/UCSBOrganization" });
   });
 });

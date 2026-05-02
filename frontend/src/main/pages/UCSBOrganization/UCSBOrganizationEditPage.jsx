@@ -12,23 +12,19 @@ export default function UCSBOrganizationEditPage({ storybook = false }) {
     data: UCSBOrganization,
     error,
     status,
-  } = useBackend(
-    [`/api/UCSBOrganization?orgCode=${orgCode}`],
-    {
-      method: "GET",
-      url: `/api/UCSBOrganization`,
-      params: { orgCode },
-    },
-  );
+  } = useBackend([`/api/UCSBOrganization?orgCode=${orgCode}`], {
+    method: "GET",
+    url: `/api/UCSBOrganization`,
+    params: { orgCode },
+  });
 
   const objectToAxiosPutParams = (data) => ({
     url: "/api/UCSBOrganization",
     method: "PUT",
     params: {
-      orgCode: orgCode, // The 'orgCode' from the URL
+      orgCode: data.orgCode, // The 'orgCode' from the URL
     },
     data: {
-      orgCode: data.orgCode,
       orgTranslationShort: data.orgTranslationShort,
       orgTranslation: data.orgTranslation,
       inactive: data.inactive,
@@ -36,14 +32,14 @@ export default function UCSBOrganizationEditPage({ storybook = false }) {
   });
 
   const onSuccess = (UCSBOrganization) => {
-    toast(`UCSBOrganization Updated - orgCode: ${UCSBOrganization.orgCode} orgTranslation: ${UCSBOrganization.orgTranslation}`);
+    toast(
+      `UCSBOrganization Updated - orgCode: ${UCSBOrganization.orgCode} orgTranslation: ${UCSBOrganization.orgTranslation}`,
+    );
   };
 
-  const mutation = useBackendMutation(
-    objectToAxiosPutParams,
-    { onSuccess },
-    [`/api/UCSBOrganization?orgCode=${orgCode}`],
-  );
+  const mutation = useBackendMutation(objectToAxiosPutParams, { onSuccess }, [
+    `/api/UCSBOrganization?orgCode=${orgCode}`,
+  ]);
 
   const { isSuccess } = mutation;
 
