@@ -104,11 +104,11 @@ describe("RecommendationRequestIndexPage tests", () => {
     );
     expect(createRecommendationRequestButton).not.toBeInTheDocument();
 
-    const requesterEmail = screen.getByText("iholiday@ucsb.edu");
-    expect(requesterEmail).toBeInTheDocument();
+    const requesterEmails = screen.getAllByText("iholiday@ucsb.edu");
+    expect(requesterEmails.length).toBeGreaterThan(0);
 
-    const explanation = screen.getByText("Summer research");
-    expect(explanation).toBeInTheDocument();
+    const explanation1 = screen.getByText("Need letter for BS/MS application.");
+    expect(explanation1).toBeInTheDocument();
 
     expect(
       screen.getByText("Index page not yet implemented"),
@@ -163,7 +163,7 @@ describe("RecommendationRequestIndexPage tests", () => {
       .reply(200, recommendationRequestFixtures.threeRecommendationRequests);
     axiosMock
       .onDelete("/api/recommendationrequests")
-      .reply(200, "Recommendation request with id 2 was deleted");
+      .reply(200, { message: "Recommendation request with id 2 was deleted" });
 
     render(
       <QueryClientProvider client={queryClient}>
