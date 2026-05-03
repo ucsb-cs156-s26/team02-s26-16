@@ -144,6 +144,9 @@ describe("UCSBOrganizationForm tests", () => {
 
     expect(await screen.findByTestId(`${testId}-submit`)).toBeInTheDocument();
 
+    fireEvent.change(screen.getByTestId(`${testId}-orgCode`), {
+      target: { value: "zbt" },
+    });
     fireEvent.change(screen.getByTestId(`${testId}-orgTranslationShort`), {
       target: { value: "ZBT" },
     });
@@ -159,12 +162,12 @@ describe("UCSBOrganizationForm tests", () => {
 
     await waitFor(() => expect(submitAction).toHaveBeenCalled());
 
-    // orgCode is omitted because it is 'disabled' in your JSX
     expect(submitAction).toHaveBeenCalledWith(
       expect.objectContaining({
+        orgCode: "zbt",
         orgTranslationShort: "ZBT",
         orgTranslation: "Zeta Beta Tau",
-        inactive: "false",
+        inactive: false,
       }),
       expect.anything(),
     );

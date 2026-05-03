@@ -12,7 +12,9 @@ export default function UCSBOrganizationCreatePage({ storybook = false }) {
       orgCode: UCSBOrganization.orgCode,
       orgTranslationShort: UCSBOrganization.orgTranslationShort,
       orgTranslation: UCSBOrganization.orgTranslation,
-      inactive: UCSBOrganization.inactive === "true" || UCSBOrganization.inactive === true,
+      inactive:
+        UCSBOrganization.inactive === "true" ||
+        UCSBOrganization.inactive === true,
     },
   });
 
