@@ -193,4 +193,23 @@ describe("UCSBOrganizationIndexPage tests", () => {
     expect(axiosMock.history.delete[0].url).toBe("/api/UCSBOrganization");
     expect(axiosMock.history.delete[0].params).toEqual({ orgCode: "vsa" });
   });
+
+  test("does not render create button for regular user", async () => {
+    setupUserOnly();
+    axiosMock.onGet("/api/UCSBOrganization/all").reply(200, []);
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <UCSBOrganizationIndexPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/Create UCSBOrganization/),
+      ).not.toBeInTheDocument();
+    });
+  });
 });
