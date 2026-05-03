@@ -172,4 +172,58 @@ describe("UCSBOrganizationForm tests", () => {
       expect.anything(),
     );
   });
+
+  test("inactive converts 'true' to boolean true", async () => {
+    const submitAction = vi.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBOrganizationForm submitAction={submitAction} />
+        </Router>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.change(screen.getByTestId("UCSBOrganizationForm-orgCode"), {
+      target: { value: "abc" },
+    });
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-orgTranslationShort"),
+      { target: { value: "ABC" } },
+    );
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-orgTranslation"),
+      { target: { value: "Alpha Beta" } },
+    );
+    fireEvent.change(screen.getByTestId("UCSBOrganizationForm-inactive"), {
+      target: { value: "true" },
+    });
+
+    fireEvent.click(screen.getByTestId("UCSBOrganizationForm-submit"));
+
+    await waitFor(() =>
+      expect(submitAction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          inactive: true,
+        }),
+        expect.anything(),
+      ),
+    );
+  });
+
+  test("inactive must be selected (not empty)", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBOrganizationForm />
+        </Router>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.click(screen.getByTestId("UCSBOrganizationForm-submit"));
+
+    expect(
+      await screen.findByText("Inactive status is required."),
+    ).toBeInTheDocument();
+  });
 });

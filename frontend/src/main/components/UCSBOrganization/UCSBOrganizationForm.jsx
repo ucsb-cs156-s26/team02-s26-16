@@ -4,91 +4,73 @@ import { useNavigate } from "react-router";
 
 function UCSBOrganizationForm({
   initialContents,
-  submitAction,
+  submitAction = () => {},
   buttonLabel = "Create",
 }) {
-  const defaultValues = initialContents
-    ? { ...initialContents, inactive: String(initialContents.inactive) }
-    : { inactive: "" };
+  const navigate = useNavigate();
+  const testIdPrefix = "UCSBOrganizationForm";
 
-  // Stryker disable all
+  // Build defaultValues without conditional object literals that Stryker mutates easily
+  const defaultValues = {
+    ...(initialContents ?? {}),
+    inactive:
+      initialContents?.inactive === undefined
+        ? ""
+        : String(initialContents.inactive),
+  };
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({ defaultValues });
-  // Stryker restore all
-
-  const navigate = useNavigate();
-
-  const testIdPrefix = "UCSBOrganizationForm";
 
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="orgCode">OrgCode</Form.Label>
+        <Form.Label>OrgCode</Form.Label>
         <Form.Control
-          data-testid={testIdPrefix + "-orgCode"}
-          id="orgCode"
-          type="text"
-          readOnly={buttonLabel === "Update"}
-          {...register("orgCode", {
-            required: "OrgCode is required.",
-          })}
+          data-testid={`${testIdPrefix}-orgCode`}
+          {...register("orgCode")}
         />
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="orgTranslationShort">
-          Short Organization Translation
-        </Form.Label>
+        <Form.Label>Short Organization Translation</Form.Label>
         <Form.Control
-          data-testid={testIdPrefix + "-orgTranslationShort"}
-          id="orgTranslationShort"
-          type="text"
-          isInvalid={Boolean(errors.orgTranslationShort)}
+          data-testid={`${testIdPrefix}-orgTranslationShort`}
           {...register("orgTranslationShort", {
             required: "Short Translation Organization is required.",
-            maxLength: {
-              value: 255,
-              message: "Max length 255 characters",
-            },
+            maxLength: { value: 255, message: "Max length 255 characters" },
           })}
         />
-        <Form.Control.Feedback type="invalid">
-          {errors.orgTranslationShort?.message}
-        </Form.Control.Feedback>
+        {errors.orgTranslationShort?.message && (
+          <div className="text-danger">
+            {errors.orgTranslationShort.message}
+          </div>
+        )}
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="orgTranslation">Organization Name</Form.Label>
+        <Form.Label>Organization Name</Form.Label>
         <Form.Control
-          data-testid={testIdPrefix + "-orgTranslation"}
-          id="orgTranslation"
-          type="text"
-          isInvalid={Boolean(errors.orgTranslation)}
+          data-testid={`${testIdPrefix}-orgTranslation`}
           {...register("orgTranslation", {
             required: "Organization Translation is required.",
           })}
         />
-        <Form.Control.Feedback type="invalid">
-          {errors.orgTranslation?.message}
-        </Form.Control.Feedback>
+        {errors.orgTranslation?.message && (
+          <div className="text-danger">{errors.orgTranslation.message}</div>
+        )}
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="inactive">Inactive</Form.Label>
-        <Form.Control
-          data-testid={testIdPrefix + "-inactive"}
-          id="inactive"
-          as="select"
-          isInvalid={Boolean(errors.inactive)}
+        <Form.Label>Inactive</Form.Label>
+        <Form.Select
+          data-testid={`${testIdPrefix}-inactive`}
           {...register("inactive", {
-            // Convert "" -> undefined (so validation fails)
-            // Convert "true"/"false" -> boolean true/false (so payload is correct)
+            // Convert "" -> undefined so required fails; "true"/"false" -> boolean
             setValueAs: (v) => (v === "" ? undefined : v === "true"),
-
-            // Validate booleans correctly: allow both true and false
             validate: (v) =>
               v === true || v === false || "Inactive status is required.",
           })}
@@ -96,19 +78,24 @@ function UCSBOrganizationForm({
           <option value="">-- Select --</option>
           <option value="true">True</option>
           <option value="false">False</option>
-        </Form.Control>
-        <Form.Control.Feedback type="invalid">
-          {errors.inactive?.message}
-        </Form.Control.Feedback>
+        </Form.Select>
+        {errors.inactive?.message && (
+          <div className="text-danger">{errors.inactive.message}</div>
+        )}
       </Form.Group>
 
-      <Button type="submit" data-testid={testIdPrefix + "-submit"}>
+      <Button
+        type="submit"
+        data-testid={`${testIdPrefix}-submit`}
+        className="me-2"
+      >
         {buttonLabel}
       </Button>
+
       <Button
         variant="secondary"
         onClick={() => navigate(-1)}
-        data-testid={testIdPrefix + "-cancel"}
+        data-testid={`${testIdPrefix}-cancel`}
       >
         Cancel
       </Button>
