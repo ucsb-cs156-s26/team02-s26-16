@@ -53,11 +53,9 @@ function UCSBOrganizationForm({
           })}
         />
         {errors.orgCode?.message && (
-          <div className="text-danger">
-            {errors.orgCode.message}
-          </div>
+          <div className="text-danger">{errors.orgCode.message}</div>
         )}
-      </Form.Group>   
+      </Form.Group>
 
       <Form.Group className="mb-3" controlId="orgTranslation">
         <Form.Label>Organization Name</Form.Label>

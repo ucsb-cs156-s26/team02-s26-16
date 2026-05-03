@@ -55,9 +55,9 @@ describe("UCSBOrganizationCreatePage tests", () => {
       </QueryClientProvider>,
     );
 
-    // await waitFor(() => {
-    //   expect(screen.getByLabelText("orgCode")).toBeInTheDocument();
-    // });
+    await waitFor(() => {
+      expect(screen.getByLabelText("OrgCode")).toBeInTheDocument();
+    });
   });
 
   test("on submit, makes request to backend, and redirects to /UCSBOrganization", async () => {
