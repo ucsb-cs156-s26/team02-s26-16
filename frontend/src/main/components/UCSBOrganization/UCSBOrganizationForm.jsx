@@ -33,9 +33,8 @@ function UCSBOrganizationForm({
           type="text"
           readOnly={buttonLabel === "Update"}
           {...register("orgCode", {
-          required: "OrgCode is required.",
-        })}
-
+            required: "OrgCode is required.",
+          })}
         />
       </Form.Group>
 
@@ -81,22 +80,22 @@ function UCSBOrganizationForm({
         <Form.Label htmlFor="inactive">Inactive</Form.Label>
         <Form.Control
           data-testid={testIdPrefix + "-inactive"}
-            id="inactive"
-            as="select"
-            isInvalid={Boolean(errors.inactive)}
-            {...register("inactive", {
-              // Convert "" -> undefined (so validation fails)
-              // Convert "true"/"false" -> boolean true/false (so payload is correct)
-              setValueAs: (v) => (v === "" ? undefined : v === "true"),
+          id="inactive"
+          as="select"
+          isInvalid={Boolean(errors.inactive)}
+          {...register("inactive", {
+            // Convert "" -> undefined (so validation fails)
+            // Convert "true"/"false" -> boolean true/false (so payload is correct)
+            setValueAs: (v) => (v === "" ? undefined : v === "true"),
 
-              // Validate booleans correctly: allow both true and false
-              validate: (v) =>
-                v === true || v === false || "Inactive status is required.",
-            })}
-          >
-            <option value="">-- Select --</option>
-            <option value="true">True</option>
-            <option value="false">False</option>
+            // Validate booleans correctly: allow both true and false
+            validate: (v) =>
+              v === true || v === false || "Inactive status is required.",
+          })}
+        >
+          <option value="">-- Select --</option>
+          <option value="true">True</option>
+          <option value="false">False</option>
         </Form.Control>
         <Form.Control.Feedback type="invalid">
           {errors.inactive?.message}

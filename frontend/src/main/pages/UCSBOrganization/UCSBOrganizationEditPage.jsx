@@ -10,8 +10,8 @@ export default function UCSBOrganizationEditPage({ storybook = false }) {
 
   const {
     data: UCSBOrganization,
-    error,
-    status,
+    _error,
+    _status,
   } = useBackend([`/api/UCSBOrganization?orgCode=${orgCode}`], {
     method: "GET",
     url: `/api/UCSBOrganization`,
