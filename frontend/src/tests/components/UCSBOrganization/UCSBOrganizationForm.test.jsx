@@ -88,46 +88,40 @@ describe("UCSBOrganizationForm tests", () => {
         <Router>
           <UCSBOrganizationForm />
         </Router>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     const submitButton = await screen.findByTestId(
-      "UCSBOrganizationForm-submit"
+      "UCSBOrganizationForm-submit",
     );
 
-  // Submit with empty orgCode -> required error
+    // Submit with empty orgCode -> required error
     fireEvent.click(submitButton);
 
-    expect(
-      await screen.findByText("OrgCode is required.")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("OrgCode is required.")).toBeInTheDocument();
 
-  // Fill other required fields so orgCode validation is isolated
+    // Fill other required fields so orgCode validation is isolated
     fireEvent.change(
       screen.getByTestId("UCSBOrganizationForm-orgTranslationShort"),
-      { target: { value: "ABC" } }
+      { target: { value: "ABC" } },
     );
     fireEvent.change(
       screen.getByTestId("UCSBOrganizationForm-orgTranslation"),
-      { target: { value: "Alpha Beta" } }
+      { target: { value: "Alpha Beta" } },
     );
-    fireEvent.change(
-      screen.getByTestId("UCSBOrganizationForm-inactive"),
-      { target: { value: "false" } }
-    );
+    fireEvent.change(screen.getByTestId("UCSBOrganizationForm-inactive"), {
+      target: { value: "false" },
+    });
 
-  // Exceed maxLength for orgCode
-    fireEvent.change(
-      screen.getByTestId("UCSBOrganizationForm-orgCode"),
-      { target: { value: "a".repeat(300) } }
-    );
+    // Exceed maxLength for orgCode
+    fireEvent.change(screen.getByTestId("UCSBOrganizationForm-orgCode"), {
+      target: { value: "a".repeat(300) },
+    });
 
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Max length 255 characters")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Max length 255 characters")).toBeInTheDocument();
     });
   });
 

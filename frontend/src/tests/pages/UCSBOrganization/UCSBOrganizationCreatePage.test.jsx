@@ -123,4 +123,99 @@ describe("UCSBOrganizationCreatePage tests", () => {
     );
     expect(mockNavigate).toBeCalledWith({ to: "/UCSBOrganization" });
   });
+
+  test("on submit, when inactive is 'true' string, sends inactive=true to backend", async () => {
+    const queryClient = new QueryClient();
+
+    const UCSBOrganization = {
+      orgCode: "acm",
+      orgTranslationShort: "ACM",
+      orgTranslation: "Association for Computing Machinery",
+      inactive: true,
+    };
+
+    axiosMock.onPost("/api/UCSBOrganization/post").reply(202, UCSBOrganization);
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <UCSBOrganizationCreatePage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("OrgCode")).toBeInTheDocument();
+    });
+
+    fireEvent.change(screen.getByLabelText("OrgCode"), {
+      target: { value: "acm" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Short Organization Translation"), {
+      target: { value: "ACM" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Organization Name"), {
+      target: { value: "Association for Computing Machinery" },
+    });
+
+    // 🔴 This line kills the mutation
+    fireEvent.change(screen.getByLabelText("Inactive"), {
+      target: { value: "true" },
+    });
+
+    fireEvent.click(screen.getByText("Create"));
+
+    await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
+
+    expect(axiosMock.history.post[0].params).toEqual({
+      orgCode: "acm",
+      orgTranslationShort: "ACM",
+      orgTranslation: "Association for Computing Machinery",
+      inactive: true,
+    });
+  });
+
+  test("on submit, when inactive is 'false', sends inactive=false to backend", async () => {
+    const queryClient = new QueryClient();
+
+    axiosMock.onPost("/api/UCSBOrganization/post").reply(202, {});
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <UCSBOrganizationCreatePage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("OrgCode")).toBeInTheDocument();
+    });
+
+    fireEvent.change(screen.getByLabelText("OrgCode"), {
+      target: { value: "test" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Short Organization Translation"), {
+      target: { value: "TEST" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Organization Name"), {
+      target: { value: "Test Org" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Inactive"), {
+      target: { value: "false" },
+    });
+
+    fireEvent.click(screen.getByText("Create"));
+
+    await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
+
+    expect(axiosMock.history.post[0].params.inactive).toBe(false);
+  });
+
+
 });
