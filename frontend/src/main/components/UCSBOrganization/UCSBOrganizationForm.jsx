@@ -27,18 +27,10 @@ function UCSBOrganizationForm({
 
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
-      <Form.Group className="mb-3">
-        <Form.Label>OrgCode</Form.Label>
-        <Form.Control
-          data-testid={`${testIdPrefix}-orgCode`}
-          {...register("orgCode")}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
+      <Form.Group className="mb-3" controlId="orgTranslationShort">
         <Form.Label>Short Organization Translation</Form.Label>
         <Form.Control
-          data-testid={`${testIdPrefix}-orgTranslationShort`}
+          data-testid="UCSBOrganizationForm-orgTranslationShort"
           {...register("orgTranslationShort", {
             required: "Short Translation Organization is required.",
             maxLength: { value: 255, message: "Max length 255 characters" },
@@ -51,10 +43,26 @@ function UCSBOrganizationForm({
         )}
       </Form.Group>
 
-      <Form.Group className="mb-3">
+      <Form.Group className="mb-3" controlId="orgCode">
+        <Form.Label>OrgCode</Form.Label>
+        <Form.Control
+          data-testid="UCSBOrganizationForm-orgCode"
+          {...register("orgCode", {
+            required: "OrgCode is required.",
+            maxLength: { value: 255, message: "Max length 255 characters" },
+          })}
+        />
+        {errors.orgCode?.message && (
+          <div className="text-danger">
+            {errors.orgCode.message}
+          </div>
+        )}
+      </Form.Group>   
+
+      <Form.Group className="mb-3" controlId="orgTranslation">
         <Form.Label>Organization Name</Form.Label>
         <Form.Control
-          data-testid={`${testIdPrefix}-orgTranslation`}
+          data-testid="UCSBOrganizationForm-orgTranslation"
           {...register("orgTranslation", {
             required: "Organization Translation is required.",
           })}
@@ -64,12 +72,11 @@ function UCSBOrganizationForm({
         )}
       </Form.Group>
 
-      <Form.Group className="mb-3">
+      <Form.Group className="mb-3" controlId="inactive">
         <Form.Label>Inactive</Form.Label>
         <Form.Select
-          data-testid={`${testIdPrefix}-inactive`}
+          data-testid="UCSBOrganizationForm-inactive"
           {...register("inactive", {
-            // Convert "" -> undefined so required fails; "true"/"false" -> boolean
             setValueAs: (v) => (v === "" ? undefined : v === "true"),
             validate: (v) =>
               v === true || v === false || "Inactive status is required.",

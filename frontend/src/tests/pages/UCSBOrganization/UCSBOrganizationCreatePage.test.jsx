@@ -60,67 +60,67 @@ describe("UCSBOrganizationCreatePage tests", () => {
     // });
   });
 
-  //   test("on submit, makes request to backend, and redirects to /UCSBOrganization", async () => {
-  //     const queryClient = new QueryClient();
-  //     const USCBOrganization = {
-  //       orgCode: "vsa",
-  //       orgTranslationShort: "VSA",
-  //       orgTranslation: "Vietamese Student Assocation",
-  //       inactive: false,
-  //     };
+  test("on submit, makes request to backend, and redirects to /UCSBOrganization", async () => {
+    const queryClient = new QueryClient();
+    const USCBOrganization = {
+      orgCode: "vsa",
+      orgTranslationShort: "VSA",
+      orgTranslation: "Vietamese Student Assocation",
+      inactive: false,
+    };
 
-  //     axiosMock.onPost("/api/UCSBOrganization/post").reply(202, USCBOrganization);
+    axiosMock.onPost("/api/UCSBOrganization/post").reply(202, USCBOrganization);
 
-  //     render(
-  //       <QueryClientProvider client={queryClient}>
-  //         <MemoryRouter>
-  //           <UCSBOrganizationCreatePage />
-  //         </MemoryRouter>
-  //       </QueryClientProvider>,
-  //     );
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <UCSBOrganizationCreatePage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
 
-  //     await waitFor(() => {
-  //       expect(screen.getByLabelText("OrgCode")).toBeInTheDocument();
-  //     });
+    await waitFor(() => {
+      expect(screen.getByLabelText("OrgCode")).toBeInTheDocument();
+    });
 
-  //     const orgCodeInput = screen.getByLabelText("OrgCode");
-  //     expect(orgCodeInput).toBeInTheDocument();
+    const orgCodeInput = screen.getByLabelText("OrgCode");
+    expect(orgCodeInput).toBeInTheDocument();
 
-  //     const orgTranslationShortInput = screen.getByLabelText(
-  //       "Short Organization Translation",
-  //     );
-  //     expect(orgTranslationShortInput).toBeInTheDocument();
+    const orgTranslationShortInput = screen.getByLabelText(
+      "Short Organization Translation",
+    );
+    expect(orgTranslationShortInput).toBeInTheDocument();
 
-  //     const orgTranslationInput = screen.getByLabelText("Organization Name");
-  //     expect(orgTranslationInput).toBeInTheDocument();
+    const orgTranslationInput = screen.getByLabelText("Organization Name");
+    expect(orgTranslationInput).toBeInTheDocument();
 
-  //     const inactiveInput = screen.getByLabelText("Inactive");
-  //     expect(inactiveInput).toBeInTheDocument();
+    const inactiveInput = screen.getByLabelText("Inactive");
+    expect(inactiveInput).toBeInTheDocument();
 
-  //     const createButton = screen.getByText("Create");
-  //     expect(createButton).toBeInTheDocument();
+    const createButton = screen.getByText("Create");
+    expect(createButton).toBeInTheDocument();
 
-  //     fireEvent.change(orgCodeInput, { target: { value: "vsa" } });
-  //     fireEvent.change(orgTranslationShortInput, { target: { value: "VSA" } });
-  //     fireEvent.change(orgTranslationInput, {
-  //       target: { value: "Vietamese Student Assocation" },
-  //     });
-  //     fireEvent.change(inactiveInput, { target: { value: false } });
-  //     fireEvent.click(createButton);
+    fireEvent.change(orgCodeInput, { target: { value: "vsa" } });
+    fireEvent.change(orgTranslationShortInput, { target: { value: "VSA" } });
+    fireEvent.change(orgTranslationInput, {
+      target: { value: "Vietamese Student Assocation" },
+    });
+    fireEvent.change(inactiveInput, { target: { value: false } });
+    fireEvent.click(createButton);
 
-  //     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
+    await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
 
-  //     expect(axiosMock.history.post[0].params).toEqual({
-  //       orgCode: "vsa",
-  //       orgTranslationShort: "VSA",
-  //       orgTranslation: "Vietamese Student Assocation",
-  //       inactive: false,
-  //     });
+    expect(axiosMock.history.post[0].params).toEqual({
+      orgCode: "vsa",
+      orgTranslationShort: "VSA",
+      orgTranslation: "Vietamese Student Assocation",
+      inactive: false,
+    });
 
-  //     // assert - check that the toast was called with the expected message
-  //     expect(mockToast).toBeCalledWith(
-  //       "New UCSBOrganization Created - orgCode: vsa orgTranslation: Vietamese Student Assocation",
-  //     );
-  //     expect(mockNavigate).toBeCalledWith({ to: "/UCSBOrganization" });
-  //   });
+    // assert - check that the toast was called with the expected message
+    expect(mockToast).toBeCalledWith(
+      "New UCSBOrganization Created - orgCode: vsa orgTranslation: Vietamese Student Assocation",
+    );
+    expect(mockNavigate).toBeCalledWith({ to: "/UCSBOrganization" });
+  });
 });
