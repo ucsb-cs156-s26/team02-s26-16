@@ -15,7 +15,6 @@ export default function UCSBDiningCommonsMenuItemEditPage() {
   } = useBackend(
     [`/api/UCSBDiningCommonsMenuItem?id=${id}`],
     {
-      method: "GET",
       url: "/api/UCSBDiningCommonsMenuItem",
       params: {
         id,
@@ -41,9 +40,7 @@ export default function UCSBDiningCommonsMenuItemEditPage() {
     toast(`UCSBDiningCommonsMenuItem Updated - id: ${menuItem.id}`);
   };
 
-  const mutation = useBackendMutation(objectToAxiosPutParams, { onSuccess }, [
-    `/api/UCSBDiningCommonsMenuItem?id=${id}`,
-  ]);
+  const mutation = useBackendMutation(objectToAxiosPutParams, { onSuccess });
 
   const { isSuccess } = mutation;
 

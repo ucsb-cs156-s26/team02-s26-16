@@ -137,6 +137,18 @@ describe("UCSBDiningCommonsMenuItemEditPage tests", () => {
 
       await screen.findByTestId("UCSBDiningCommonsMenuItemForm-id");
 
+      expect(
+        queryClient.getQueryData(["/api/UCSBDiningCommonsMenuItem?id=17"]),
+      ).toBeDefined();
+
+      const menuItemGet = axiosMock.history.get.find(
+        (request) => request.url === "/api/UCSBDiningCommonsMenuItem",
+      );
+
+      expect(menuItemGet).toBeDefined();
+      expect(menuItemGet.method).toBe("get");
+      expect(menuItemGet.params).toEqual({ id: 17 });
+
       const idField = screen.getByTestId("UCSBDiningCommonsMenuItemForm-id");
       const diningCommonsCodeField = screen.getByTestId(
         "UCSBDiningCommonsMenuItemForm-diningCommonsCode",
