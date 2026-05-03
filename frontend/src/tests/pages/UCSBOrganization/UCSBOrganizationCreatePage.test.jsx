@@ -216,6 +216,4 @@ describe("UCSBOrganizationCreatePage tests", () => {
 
     expect(axiosMock.history.post[0].params.inactive).toBe(false);
   });
-
-
 });

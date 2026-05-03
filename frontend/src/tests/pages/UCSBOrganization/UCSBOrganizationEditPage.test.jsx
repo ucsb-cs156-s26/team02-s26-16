@@ -2,6 +2,7 @@ import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router";
 import UCSBOrganizationEditPage from "main/pages/UCSBOrganization/UCSBOrganizationEditPage";
+import * as useBackendModule from "main/utils/useBackend";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
@@ -188,11 +189,76 @@ describe("UCSBOrganizationEditPage tests", () => {
       fireEvent.click(submitButton);
       await waitFor(() => expect(axiosMock.history.put.length).toBe(1));
 
+      const putCall = axiosMock.history.put[0];
+
+      expect(putCall.params).toEqual({ orgCode: "vsa" });
+      const putBody = JSON.parse(putCall.data);
+
+      expect(putBody).toMatchObject({
+        orgTranslationShort: "VSA",
+        orgTranslation: "UCSB Vietnamese Student Association",
+      });
+
+      // inactive may be boolean or string depending on form lib
+      expect(putBody).toHaveProperty("inactive");
+
       await waitFor(() => expect(mockToast).toBeCalled());
       expect(mockToast).toBeCalledWith(
         "UCSBOrganization Updated - orgCode: vsa orgTranslation: UCSB Vietnamese Student Association",
       );
       expect(mockNavigate).toBeCalledWith({ to: "/UCSBOrganization" });
+    });
+  });
+
+  describe("hook wiring", () => {
+    test("calls useBackend and useBackendMutation with correct args", async () => {
+      const useBackendSpy = vi
+        .spyOn(useBackendModule, "useBackend")
+        .mockReturnValue({
+          data: {
+            orgCode: "vsa",
+            orgTranslationShort: "VSA",
+            orgTranslation: "Vietnamese Student Association",
+            inactive: false,
+          },
+          _error: null,
+          _status: "success",
+        });
+
+      const useBackendMutationSpy = vi
+        .spyOn(useBackendModule, "useBackendMutation")
+        .mockReturnValue({ mutate: vi.fn(), isSuccess: false });
+
+      const queryClient = new QueryClient();
+
+      render(
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <UCSBOrganizationEditPage />
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+
+      await screen.findByText("Edit UCSBOrganization");
+
+      // ✅ KILLS useBackend([]) and method:""
+      expect(useBackendSpy).toHaveBeenCalledWith(
+        [`/api/UCSBOrganization?orgCode=vsa`],
+        expect.objectContaining({
+          method: "GET",
+          url: "/api/UCSBOrganization",
+          params: { orgCode: "vsa" },
+        }),
+      );
+
+      // ✅ KILLS mutation key [] / [""]
+      expect(useBackendMutationSpy).toHaveBeenCalledWith(
+        expect.any(Function),
+        expect.any(Object),
+        [`/api/UCSBOrganization?orgCode=vsa`],
+      );
+
+      vi.restoreAllMocks();
     });
   });
 });
