@@ -82,6 +82,55 @@ describe("UCSBOrganizationForm tests", () => {
     // expect(orgCodeInput).toBeDisabled();
   });
 
+  test("orgCode validations: required and maxLength are enforced and displayed", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBOrganizationForm />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    const submitButton = await screen.findByTestId(
+      "UCSBOrganizationForm-submit"
+    );
+
+  // Submit with empty orgCode -> required error
+    fireEvent.click(submitButton);
+
+    expect(
+      await screen.findByText("OrgCode is required.")
+    ).toBeInTheDocument();
+
+  // Fill other required fields so orgCode validation is isolated
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-orgTranslationShort"),
+      { target: { value: "ABC" } }
+    );
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-orgTranslation"),
+      { target: { value: "Alpha Beta" } }
+    );
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-inactive"),
+      { target: { value: "false" } }
+    );
+
+  // Exceed maxLength for orgCode
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-orgCode"),
+      { target: { value: "a".repeat(300) } }
+    );
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Max length 255 characters")
+      ).toBeInTheDocument();
+    });
+  });
+
   test("that navigate(-1) is called when Cancel is clicked", async () => {
     render(
       <QueryClientProvider client={queryClient}>
