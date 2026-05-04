@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s26/team02-s26-16
 owner: ucsb-cs156-s26
 repo_name: team02-s26-16
-pull_requests: [{"author":{"id":"MDQ6VXNlcjY4Mjk4MzE1","is_bot":false,"login":"JackLiu8","name":""},"headRefName":"Jack-MenuItemEditPage","number":94,"title":"added edit page stuff","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/94"},{"author":{"id":"U_kgDOCuipXA","is_bot":false,"login":"nikitahuynh","name":""},"headRefName":"nh-UCSBOrganization-createPage","number":89,"title":"Nh ucsb organization create page","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/89"}]
+pull_requests: [{"author":{"id":"U_kgDOCuipXA","is_bot":false,"login":"nikitahuynh","name":""},"headRefName":"nh-UCSBOrganization-createPage","number":89,"title":"Nh ucsb organization create page","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/89"}]
