@@ -27,6 +27,10 @@ import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
 import ArticlesCreatePage from "main/pages/Articles/ArticlesCreatePage";
 import ArticlesEditPage from "main/pages/Articles/ArticlesEditPage";
 
+import UCSBOrganizationIndexPage from "main/pages/UCSBOrganization/UCSBOrganizationIndexPage";
+import UCSBOrganizationCreatePage from "main/pages/UCSBOrganization/UCSBOrganizationCreatePage";
+import UCSBOrganizationEditPage from "main/pages/UCSBOrganization/UCSBOrganizationEditPage";
+
 import { hasRole, useCurrentUser } from "main/utils/useCurrentUser";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -166,6 +170,30 @@ function App() {
             exact
             path="/articles/create"
             element={<ArticlesCreatePage />}
+          />
+        </>
+      )}
+
+      {hasRole(currentUser, "ROLE_USER") && (
+        <>
+          <Route
+            exact
+            path="/UCSBOrganization"
+            element={<UCSBOrganizationIndexPage />}
+          />
+        </>
+      )}
+      {hasRole(currentUser, "ROLE_ADMIN") && (
+        <>
+          <Route
+            exact
+            path="/UCSBOrganization/edit/:orgCode"
+            element={<UCSBOrganizationEditPage />}
+          />
+          <Route
+            exact
+            path="/UCSBOrganization/create"
+            element={<UCSBOrganizationCreatePage />}
           />
         </>
       )}

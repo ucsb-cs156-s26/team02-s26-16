@@ -53,20 +53,20 @@ public class UCSBOrganizationController extends ApiController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("/post")
   public UCSBOrganization postOrganization(
-      @Parameter(name = "orgCode") @RequestParam String orgCode,
-      @Parameter(name = "orgTranslationShort") @RequestParam String orgTranslationShort,
-      @Parameter(name = "orgTranslation") @RequestParam String orgTranslation,
-      @Parameter(name = "inactive") @RequestParam boolean inactive) {
+      @RequestParam String orgCode,
+      @RequestParam String orgTranslationShort,
+      @RequestParam String orgTranslation,
+      @RequestParam boolean inactive) {
 
-    UCSBOrganization organization = new UCSBOrganization();
-    organization.setOrgCode(orgCode);
-    organization.setOrgTranslationShort(orgTranslationShort);
-    organization.setOrgTranslation(orgTranslation);
-    organization.setInactive(inactive);
+    UCSBOrganization org =
+        UCSBOrganization.builder()
+            .orgCode(orgCode)
+            .orgTranslationShort(orgTranslationShort)
+            .orgTranslation(orgTranslation)
+            .inactive(inactive)
+            .build();
 
-    UCSBOrganization savedOrganization = ucsbOrganizationRepository.save(organization);
-
-    return savedOrganization;
+    return ucsbOrganizationRepository.save(org);
   }
 
   /**
@@ -81,7 +81,7 @@ public class UCSBOrganizationController extends ApiController {
   public UCSBOrganization getById(@Parameter(name = "orgCode") @RequestParam String orgCode) {
     UCSBOrganization org =
         ucsbOrganizationRepository
-            .findById(orgCode)
+            .findById(java.util.Objects.requireNonNull(orgCode))
             .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, orgCode));
 
     return org;
@@ -98,15 +98,15 @@ public class UCSBOrganizationController extends ApiController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("")
   public UCSBOrganization updateOrganization(
-      @Parameter(name = "orgCode") @RequestParam String orgCode,
+      @Parameter(name = "orgCode") @RequestParam(required = true) String orgCode,
       @RequestBody @Valid UCSBOrganization incoming) {
 
     UCSBOrganization organization =
         ucsbOrganizationRepository
-            .findById(orgCode)
+            .findById(java.util.Objects.requireNonNull(orgCode))
             .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, orgCode));
 
-    organization.setOrgCode(incoming.getOrgCode());
+    // organization.setOrgCode(incoming.getOrgCode());
     organization.setOrgTranslationShort(incoming.getOrgTranslationShort());
     organization.setOrgTranslation(incoming.getOrgTranslation());
     organization.setInactive(incoming.getInactive());
@@ -128,7 +128,7 @@ public class UCSBOrganizationController extends ApiController {
   public Object deleteOrganization(@Parameter(name = "orgCode") @RequestParam String orgCode) {
     UCSBOrganization organization =
         ucsbOrganizationRepository
-            .findById(orgCode)
+            .findById(java.util.Objects.requireNonNull(orgCode))
             .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, orgCode));
 
     ucsbOrganizationRepository.delete(organization);
