@@ -16,7 +16,7 @@ function HelpRequestsForm({
     defaultValues: initialContents
       ? {
           ...initialContents,
-          request_time: initialContents.request_time.replace("Z", ""),
+          requestTime: initialContents.requestTime.replace("Z", ""),
         }
       : {},
   });
@@ -56,8 +56,8 @@ function HelpRequestsForm({
           data-testid={testIdPrefix + "-requester_email"}
           id="requester_email"
           type="text"
-          isInvalid={Boolean(errors.requester_email)}
-          {...register("requester_email", {
+          isInvalid={Boolean(errors.requesterEmail)}
+          {...register("requesterEmail", {
             required: "Email is required.",
             maxLength: {
               value: 30,
@@ -66,7 +66,7 @@ function HelpRequestsForm({
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.requester_email?.message}
+          {errors.requesterEmail?.message}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -76,13 +76,13 @@ function HelpRequestsForm({
           data-testid={testIdPrefix + "-team_id"}
           id="team_id"
           type="text"
-          isInvalid={Boolean(errors.team_id)}
-          {...register("team_id", {
+          isInvalid={Boolean(errors.teamId)}
+          {...register("teamId", {
             required: "Team ID is required.",
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.team_id?.message}
+          {errors.teamId?.message}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -94,13 +94,13 @@ function HelpRequestsForm({
           data-testid={testIdPrefix + "-table_or_breakout_room"}
           id="table_or_breakout_room"
           type="text"
-          isInvalid={Boolean(errors.table_or_breakout_room)}
-          {...register("table_or_breakout_room", {
+          isInvalid={Boolean(errors.tableOrBreakoutRoom)}
+          {...register("tableOrBreakoutRoom", {
             required: "Table or Breakout Room is required.",
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.table_or_breakout_room?.message}
+          {errors.tableOrBreakoutRoom?.message}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -110,14 +110,14 @@ function HelpRequestsForm({
           data-testid={testIdPrefix + "-request_time"}
           id="request_time"
           type="datetime-local"
-          isInvalid={Boolean(errors.request_time)}
-          {...register("request_time", {
+          isInvalid={Boolean(errors.requestTime)}
+          {...register("requestTime", {
             required: true,
             pattern: isodate_regex,
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.request_time && "Request Time is required. "}
+          {errors.requestTime && "Request Time is required. "}
         </Form.Control.Feedback>
       </Form.Group>
 

@@ -1,5 +1,5 @@
 import React from "react";
-import HelpRequestsForm from "main/components/HelpRequests/HelpRequestsForm";
+import HelpRequestsForm from "main/components/HelpRequests/HelpRequestForm";
 import { helpRequestFixtures } from "fixtures/helpRequestFixtures";
 
 export default {
