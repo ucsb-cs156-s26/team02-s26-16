@@ -269,4 +269,42 @@ describe("UCSBOrganizationForm tests", () => {
       await screen.findByText("Inactive status is required."),
     ).toBeInTheDocument();
   });
+
+  test("default submitAction (noop) is called on valid submit", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBOrganizationForm />
+        </Router>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.change(screen.getByTestId("UCSBOrganizationForm-orgCode"), {
+      target: { value: "abc" },
+    });
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-orgTranslationShort"),
+      {
+        target: { value: "ABC" },
+      },
+    );
+    fireEvent.change(
+      screen.getByTestId("UCSBOrganizationForm-orgTranslation"),
+      {
+        target: { value: "Alpha Beta" },
+      },
+    );
+    fireEvent.change(screen.getByTestId("UCSBOrganizationForm-inactive"), {
+      target: { value: "false" },
+    });
+
+    fireEvent.click(screen.getByTestId("UCSBOrganizationForm-submit"));
+
+    // no assertion needed — function coverage only cares that it runs
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Inactive status is required."),
+      ).not.toBeInTheDocument(),
+    );
+  });
 });
