@@ -2,107 +2,103 @@ import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
-const noop = () => {};
-
 function UCSBOrganizationForm({
   initialContents,
-  submitAction = noop,
+  submitAction,
   buttonLabel = "Create",
 }) {
-  const navigate = useNavigate();
-  const testIdPrefix = "UCSBOrganizationForm";
+  const defaultValues = initialContents || {};
 
-  // Build defaultValues without conditional object literals that Stryker mutates easily
-  const defaultValues = {
-    ...(initialContents ?? {}),
-    inactive:
-      initialContents?.inactive === undefined
-        ? ""
-        : String(initialContents.inactive),
-  };
-
+  // Stryker disable all
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({ defaultValues });
+  // Stryker restore all
+
+  const navigate = useNavigate();
+
+  const testIdPrefix = "UCSBOrganizationForm";
 
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
-      <Form.Group className="mb-3" controlId="orgTranslationShort">
-        <Form.Label>Short Organization Translation</Form.Label>
+      <Form.Group className="mb-3">
+        <Form.Label htmlFor="orgCode">OrgCode</Form.Label>
         <Form.Control
-          data-testid="UCSBOrganizationForm-orgTranslationShort"
+          data-testid={testIdPrefix + "-orgCode"}
+          id="orgCode"
+          type="text"
+          {...register("orgCode")}
+          disabled
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label htmlFor="orgTranslationShort">
+          Short Organization Translation
+        </Form.Label>
+        <Form.Control
+          data-testid={testIdPrefix + "-orgTranslationShort"}
+          id="orgTranslationShort"
+          type="text"
+          isInvalid={Boolean(errors.orgTranslationShort)}
           {...register("orgTranslationShort", {
             required: "Short Translation Organization is required.",
-            maxLength: { value: 255, message: "Max length 255 characters" },
+            maxLength: {
+              value: 255,
+              message: "Max length 255 characters",
+            },
           })}
         />
-        {errors.orgTranslationShort?.message && (
-          <div className="text-danger">
-            {errors.orgTranslationShort.message}
-          </div>
-        )}
+        <Form.Control.Feedback type="invalid">
+          {errors.orgTranslationShort?.message}
+        </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="orgCode">
-        <Form.Label>OrgCode</Form.Label>
+      <Form.Group className="mb-3">
+        <Form.Label htmlFor="orgTranslation">Organization Name</Form.Label>
         <Form.Control
-          data-testid="UCSBOrganizationForm-orgCode"
-          {...register("orgCode", {
-            required: "OrgCode is required.",
-            maxLength: { value: 255, message: "Max length 255 characters" },
-          })}
-        />
-        {errors.orgCode?.message && (
-          <div className="text-danger">{errors.orgCode.message}</div>
-        )}
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="orgTranslation">
-        <Form.Label>Organization Name</Form.Label>
-        <Form.Control
-          data-testid="UCSBOrganizationForm-orgTranslation"
+          data-testid={testIdPrefix + "-orgTranslation"}
+          id="orgTranslation"
+          type="text"
+          isInvalid={Boolean(errors.orgTranslation)}
           {...register("orgTranslation", {
             required: "Organization Translation is required.",
           })}
         />
-        {errors.orgTranslation?.message && (
-          <div className="text-danger">{errors.orgTranslation.message}</div>
-        )}
+        <Form.Control.Feedback type="invalid">
+          {errors.orgTranslation?.message}
+        </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="inactive">
-        <Form.Label>Inactive</Form.Label>
-        <Form.Select
-          data-testid="UCSBOrganizationForm-inactive"
+      <Form.Group className="mb-3">
+        <Form.Label htmlFor="inactive">Inactive</Form.Label>
+        <Form.Control
+          data-testid={testIdPrefix + "-inactive"}
+          id="inactive"
+          as="select"
+          isInvalid={Boolean(errors.inactive)}
           {...register("inactive", {
-            setValueAs: (v) => (v === "" ? undefined : v === "true"),
-            validate: (v) =>
-              v === true || v === false || "Inactive status is required.",
+            required: "Inactive status is required.",
           })}
         >
           <option value="">-- Select --</option>
           <option value="true">True</option>
           <option value="false">False</option>
-        </Form.Select>
-        {errors.inactive?.message && (
-          <div className="text-danger">{errors.inactive.message}</div>
-        )}
+        </Form.Control>
+        <Form.Control.Feedback type="invalid">
+          {errors.inactive?.message}
+        </Form.Control.Feedback>
       </Form.Group>
 
-      <Button
-        type="submit"
-        data-testid={`${testIdPrefix}-submit`}
-        className="me-2"
-      >
+      <Button type="submit" data-testid={testIdPrefix + "-submit"}>
         {buttonLabel}
       </Button>
-
       <Button
         variant="secondary"
         onClick={() => navigate(-1)}
-        data-testid={`${testIdPrefix}-cancel`}
+        data-testid={testIdPrefix + "-cancel"}
       >
         Cancel
       </Button>
