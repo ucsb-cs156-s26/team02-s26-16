@@ -72,7 +72,9 @@ function HelpRequestsForm({
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="table_or_breakout_room">Table or Breakout Room</Form.Label>
+        <Form.Label htmlFor="table_or_breakout_room">
+          Table or Breakout Room
+        </Form.Label>
         <Form.Control
           data-testid={testIdPrefix + "-table_or_breakout_room"}
           id="table_or_breakout_room"
@@ -86,7 +88,7 @@ function HelpRequestsForm({
           {errors.table_or_breakout_room?.message}
         </Form.Control.Feedback>
       </Form.Group>
-      
+
       <Form.Group className="mb-3">
         <Form.Label htmlFor="request_time">Request Time</Form.Label>
         <Form.Control
