@@ -12,12 +12,27 @@ function HelpRequestsForm({
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({ defaultValues: initialContents || {} });
+  } = useForm({
+    defaultValues: initialContents
+      ? {
+          ...initialContents,
+          request_time: initialContents.request_time.replace("Z", ""),
+        }
+      : {},
+  });
   // Stryker restore all
 
   const navigate = useNavigate();
 
   const testIdPrefix = "HelpRequestsForm";
+
+  // For explanation, see: https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
+  // Note that even this complex regex may still need some tweaks
+
+  // Stryker disable Regex
+  const isodate_regex =
+    /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/i;
+  // Stryker restore Regex
 
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
@@ -90,18 +105,19 @@ function HelpRequestsForm({
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="request_time">Request Time</Form.Label>
+        <Form.Label htmlFor="request_time">Request Time (in UTC)</Form.Label>
         <Form.Control
           data-testid={testIdPrefix + "-request_time"}
           id="request_time"
-          type="text"
+          type="datetime-local"
           isInvalid={Boolean(errors.request_time)}
           {...register("request_time", {
-            required: "Request Time is required.",
+            required: true,
+            pattern: isodate_regex,
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.table_or_breakout_room?.message}
+          {errors.request_time && "Request Time is required. "}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -122,19 +138,13 @@ function HelpRequestsForm({
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="solved">Solved</Form.Label>
-        <Form.Control
-          data-testid={testIdPrefix + "-solved"}
+        <Form.Check
+          type="checkbox"
+          label="Solved"
           id="solved"
-          type="text"
-          isInvalid={Boolean(errors.solved)}
-          {...register("solved", {
-            required: "Solved is required.",
-          })}
+          data-testid={testIdPrefix + "-solved"}
+          {...register("solved")}
         />
-        <Form.Control.Feedback type="invalid">
-          {errors.solved?.message}
-        </Form.Control.Feedback>
       </Form.Group>
 
       <Button type="submit" data-testid={testIdPrefix + "-submit"}>
