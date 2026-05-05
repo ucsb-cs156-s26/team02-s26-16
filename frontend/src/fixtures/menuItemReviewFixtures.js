@@ -1,5 +1,5 @@
 const menuItemReviewFixtures = {
-  oneDate: {
+  oneReview: {
     id: 2,
     itemId: 12,
     reviewerEmail: "johns@ucsb.edu",
@@ -7,7 +7,7 @@ const menuItemReviewFixtures = {
     dateReviewed: "2026-04-30T05:29:22",
     comments: "I really really like pie",
   },
-  threeDates: [
+  threeReviews: [
     {
       id: 2,
       itemId: 12,
