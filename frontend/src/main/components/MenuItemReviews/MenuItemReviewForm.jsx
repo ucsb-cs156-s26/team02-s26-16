@@ -84,7 +84,9 @@ function MenuItemReviewForm({
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="dateReviewed">Date Reviewed</Form.Label>
+        <Form.Label htmlFor="dateReviewed">
+          Date Reviewed (iso format)
+        </Form.Label>
         <Form.Control
           data-testid={testIdPrefix + "-dateReviewed"}
           id="dateReviewed"
@@ -108,6 +110,10 @@ function MenuItemReviewForm({
           isInvalid={Boolean(errors.comments)}
           {...register("comments", {
             required: "Comments is required.",
+            maxLength: {
+              value: 255,
+              message: "Max length 255 characters",
+            },
           })}
         />
         <Form.Control.Feedback type="invalid">
