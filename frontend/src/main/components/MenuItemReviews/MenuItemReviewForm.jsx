@@ -121,7 +121,7 @@ function MenuItemReviewForm({
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Button type="submit" data-testid={testIdPrefix + "-submit"}>
+      <Button type="submit">
         {buttonLabel}
       </Button>
       <Button

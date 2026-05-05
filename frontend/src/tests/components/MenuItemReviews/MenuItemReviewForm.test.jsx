@@ -64,6 +64,13 @@ describe("MenuItemReviewForm tests", () => {
 
     expect(await screen.findByTestId(`${testId}-id`)).toBeInTheDocument();
     expect(screen.getByText(`Id`)).toBeInTheDocument();
+
+    expect(screen.getByTestId(/MenuItemReviewForm-id/)).toHaveValue(String(menuItemReviewFixtures.oneReview.id));
+    expect(screen.getByTestId(/MenuItemReviewForm-itemId/)).toHaveValue(String(menuItemReviewFixtures.oneReview.itemId));
+    expect(screen.getByTestId(/MenuItemReviewForm-reviewerEmail/)).toHaveValue(menuItemReviewFixtures.oneReview.reviewerEmail);
+    expect(screen.getByTestId(/MenuItemReviewForm-stars/)).toHaveValue(String(menuItemReviewFixtures.oneReview.stars));
+    expect(screen.getByTestId(/MenuItemReviewForm-dateReviewed/)).toHaveValue("2026-04-30T05:29:22.000");
+    expect(screen.getByTestId(/MenuItemReviewForm-comments/)).toHaveValue(menuItemReviewFixtures.oneReview.comments);
   });
 
   test("that navigate(-1) is called when Cancel is clicked", async () => {
@@ -94,6 +101,7 @@ describe("MenuItemReviewForm tests", () => {
     expect(await screen.findByText(/Create/)).toBeInTheDocument();
     const submitButton = screen.getByText(/Create/);
     fireEvent.click(submitButton);
+
 
     await screen.findByText(/Item ID is required/);
     expect(screen.getByText(/Reviewer Email is required/)).toBeInTheDocument();
