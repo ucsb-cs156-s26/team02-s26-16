@@ -26,7 +26,7 @@ function MenuItemReviewForm({
   // Stryker restore Regex
 
   //const testIdPrefix = "MenuItemReviewForm";
-	
+
   // Stryker disable next-line all
   const yyyyq_regex = /((19)|(20))\d{2}[1-4]/i; // Accepts from 1900-2099 followed by 1-4.  Close enough.
 
@@ -59,7 +59,7 @@ function MenuItemReviewForm({
               id="itemId"
               type="number"
               isInvalid={Boolean(errors.itemId)}
-              {...register("itemId"	, {
+              {...register("itemId", {
                 required: "Item ID is required.",
               })}
             />
@@ -70,7 +70,7 @@ function MenuItemReviewForm({
         </Col>
       </Row>
 
-       <Row>
+      <Row>
         <Col>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="reviewerEmail">Reviewer Email</Form.Label>
@@ -79,7 +79,7 @@ function MenuItemReviewForm({
               id="reviewerEmail"
               type="text"
               isInvalid={Boolean(errors.reviewerEmail)}
-              {...register("reviewerEmail"     , {
+              {...register("reviewerEmail", {
                 required: "Reviewer Email is required.",
               })}
             />
@@ -99,7 +99,7 @@ function MenuItemReviewForm({
               id="stars"
               type="number"
               isInvalid={Boolean(errors.stars)}
-              {...register("stars"     , {
+              {...register("stars", {
                 required: "Stars is required.",
               })}
             />
@@ -111,9 +111,11 @@ function MenuItemReviewForm({
       </Row>
 
       <Row>
-	<Col>
+        <Col>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="dateReviewed">Date Reviewed (iso format)</Form.Label>
+            <Form.Label htmlFor="dateReviewed">
+              Date Reviewed (iso format)
+            </Form.Label>
             <Form.Control
               data-testid="MenuItemReviewForm-dateReviewed"
               id="dateReviewed"
@@ -140,7 +142,7 @@ function MenuItemReviewForm({
               id="comments"
               type="text"
               isInvalid={Boolean(errors.comments)}
-              {...register("comments"     , {
+              {...register("comments", {
                 required: "Comments is required.",
               })}
             />
@@ -150,7 +152,7 @@ function MenuItemReviewForm({
           </Form.Group>
         </Col>
       </Row>
-      
+
       <Row>
         <Col>
           <Button type="submit" data-testid="MenuItemReviewForm-submit">
