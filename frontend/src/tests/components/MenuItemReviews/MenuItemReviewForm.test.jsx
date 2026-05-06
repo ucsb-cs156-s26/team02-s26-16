@@ -78,7 +78,7 @@ describe("MenuItemReviewForm tests", () => {
       String(menuItemReviewFixtures.oneReview.stars),
     );
     expect(screen.getByTestId(/MenuItemReviewForm-dateReviewed/)).toHaveValue(
-      "2026-04-30T05:29:22.000",
+      "2026-04-30T05:29",
     );
     expect(screen.getByTestId(/MenuItemReviewForm-comments/)).toHaveValue(
       menuItemReviewFixtures.oneReview.comments,
@@ -127,5 +127,19 @@ describe("MenuItemReviewForm tests", () => {
     await waitFor(() => {
       expect(screen.getByText(/Max length 255 characters/)).toBeInTheDocument();
     });
+  });
+
+  test("has correct submit button testid", () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <MenuItemReviewForm submitAction={vi.fn()} />
+        </Router>
+      </QueryClientProvider>,
+    );
+
+    const button = screen.getByTestId("MenuItemReviewForm-submit");
+
+    expect(button).toBeInTheDocument();
   });
 });

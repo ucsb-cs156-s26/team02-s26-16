@@ -4,7 +4,7 @@ const menuItemReviewFixtures = {
     itemId: 12,
     reviewerEmail: "johns@ucsb.edu",
     stars: 3,
-    dateReviewed: "2026-04-30T05:29:22",
+    dateReviewed: "2026-04-30T05:29",
     comments: "I really really like pie",
   },
   threeReviews: [
@@ -13,7 +13,7 @@ const menuItemReviewFixtures = {
       itemId: 12,
       reviewerEmail: "johns@ucsb.edu",
       stars: 3,
-      dateReviewed: "2026-04-30T05:29:22",
+      dateReviewed: "2026-04-30T05:29",
       comments: "I really really like pie",
     },
     {
@@ -21,7 +21,7 @@ const menuItemReviewFixtures = {
       itemId: 15,
       reviewerEmail: "hater@ucsb.edu",
       stars: 1,
-      dateReviewed: "2026-04-30T05:38:22",
+      dateReviewed: "2026-04-30T05:38",
       comments: "This tastes like cardboard",
     },
     {
@@ -29,7 +29,7 @@ const menuItemReviewFixtures = {
       itemId: 25,
       reviewerEmail: "lasttest@ucsb.edu",
       stars: 4,
-      dateReviewed: "2026-04-30T05:39:22",
+      dateReviewed: "2026-04-30T05:39",
       comments: "Carillo on top",
     },
   ],
