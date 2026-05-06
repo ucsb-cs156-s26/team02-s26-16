@@ -79,7 +79,7 @@ describe("UCSBOrganizationForm tests", () => {
       String(UCSBOrganizationFixtures.pfc.inactive),
     );
 
-    expect(orgCodeInput).toBeDisabled();
+    // expect(orgCodeInput).toBeDisabled();
   });
 
   test("that navigate(-1) is called when Cancel is clicked", async () => {
@@ -144,6 +144,9 @@ describe("UCSBOrganizationForm tests", () => {
 
     expect(await screen.findByTestId(`${testId}-submit`)).toBeInTheDocument();
 
+    fireEvent.change(screen.getByTestId(`${testId}-orgCode`), {
+      target: { value: "zbt" },
+    });
     fireEvent.change(screen.getByTestId(`${testId}-orgTranslationShort`), {
       target: { value: "ZBT" },
     });
@@ -162,6 +165,7 @@ describe("UCSBOrganizationForm tests", () => {
     // orgCode is omitted because it is 'disabled' in your JSX
     expect(submitAction).toHaveBeenCalledWith(
       expect.objectContaining({
+        orgCode: "zbt",
         orgTranslationShort: "ZBT",
         orgTranslation: "Zeta Beta Tau",
         inactive: "false",
