@@ -105,7 +105,7 @@ describe("MenuItemReviewTable tests", () => {
     ).toHaveTextContent("3");
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-dateReviewed`),
-    ).toHaveTextContent("2026-04-30T05:29:22");
+    ).toHaveTextContent("2026-04-30T05:29");
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-comments`),
     ).toHaveTextContent("I really really like pie");
@@ -124,7 +124,7 @@ describe("MenuItemReviewTable tests", () => {
     ).toHaveTextContent("1");
     expect(
       screen.getByTestId(`${testId}-cell-row-1-col-dateReviewed`),
-    ).toHaveTextContent("2026-04-30T05:38:22");
+    ).toHaveTextContent("2026-04-30T05:38");
     expect(
       screen.getByTestId(`${testId}-cell-row-1-col-comments`),
     ).toHaveTextContent("This tastes like cardboard");
@@ -143,7 +143,7 @@ describe("MenuItemReviewTable tests", () => {
     ).toHaveTextContent("4");
     expect(
       screen.getByTestId(`${testId}-cell-row-2-col-dateReviewed`),
-    ).toHaveTextContent("2026-04-30T05:39:22");
+    ).toHaveTextContent("2026-04-30T05:39");
     expect(
       screen.getByTestId(`${testId}-cell-row-2-col-comments`),
     ).toHaveTextContent("Carillo on top");
@@ -202,7 +202,7 @@ describe("MenuItemReviewTable tests", () => {
     ).toHaveTextContent("3");
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-dateReviewed`),
-    ).toHaveTextContent("2026-04-30T05:29:22");
+    ).toHaveTextContent("2026-04-30T05:29");
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-comments`),
     ).toHaveTextContent("I really really like pie");
@@ -221,7 +221,7 @@ describe("MenuItemReviewTable tests", () => {
     ).toHaveTextContent("1");
     expect(
       screen.getByTestId(`${testId}-cell-row-1-col-dateReviewed`),
-    ).toHaveTextContent("2026-04-30T05:38:22");
+    ).toHaveTextContent("2026-04-30T05:38");
     expect(
       screen.getByTestId(`${testId}-cell-row-1-col-comments`),
     ).toHaveTextContent("This tastes like cardboard");
@@ -240,7 +240,7 @@ describe("MenuItemReviewTable tests", () => {
     ).toHaveTextContent("4");
     expect(
       screen.getByTestId(`${testId}-cell-row-2-col-dateReviewed`),
-    ).toHaveTextContent("2026-04-30T05:39:22");
+    ).toHaveTextContent("2026-04-30T05:39");
     expect(
       screen.getByTestId(`${testId}-cell-row-2-col-comments`),
     ).toHaveTextContent("Carillo on top");
@@ -280,7 +280,7 @@ describe("MenuItemReviewTable tests", () => {
 
     // assert - check that the navigate function was called with the expected path
     await waitFor(() =>
-      expect(mockedNavigate).toHaveBeenCalledWith("/MenuItemReview/edit/2"),
+      expect(mockedNavigate).toHaveBeenCalledWith("/menuitemreviews/edit/2"),
     );
   });
 

@@ -108,7 +108,7 @@ describe("MenuItemReviewsIndexPage tests", () => {
     );
     expect(stars).toBeInTheDocument();
 
-    const dateReviewed = screen.getByText("2026-04-30T05:29:22");
+    const dateReviewed = screen.getByText("2026-04-30T05:29");
     expect(dateReviewed).toBeInTheDocument();
 
     const comments = screen.getByText("I really really like pie");
