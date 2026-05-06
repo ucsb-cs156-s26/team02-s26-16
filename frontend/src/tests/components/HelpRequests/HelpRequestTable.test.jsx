@@ -199,7 +199,7 @@ describe("HelpRequestTable tests", () => {
 
     // assert - check that the navigate function was called with the expected path
     await waitFor(() =>
-      expect(mockedNavigate).toHaveBeenCalledWith("/help-requests/edit/1"),
+      expect(mockedNavigate).toHaveBeenCalledWith("/helprequests/edit/1"),
     );
   });
 
@@ -208,8 +208,7 @@ describe("HelpRequestTable tests", () => {
     const currentUser = currentUserFixtures.adminUser;
 
     const axiosMock = new AxiosMockAdapter(axios);
-    axiosMock
-      .onDelete("/api/help-requests")
+    axiosMock.onDelete("/api/helprequests")
       .reply(200, { message: "Help request deleted" });
 
     // act - render the component
