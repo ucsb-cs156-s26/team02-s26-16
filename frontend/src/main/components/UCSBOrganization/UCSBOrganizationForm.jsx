@@ -30,7 +30,7 @@ function UCSBOrganizationForm({
           id="orgCode"
           type="text"
           {...register("orgCode")}
-          disabled
+          // disabled
         />
       </Form.Group>
 
