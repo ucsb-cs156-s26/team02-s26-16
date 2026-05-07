@@ -72,7 +72,9 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>,
     );
 
-    expect(await screen.findByTestId(`${testId}-requesterEmail`)).toBeInTheDocument();
+    expect(
+      await screen.findByTestId(`${testId}-requesterEmail`),
+    ).toBeInTheDocument();
     expect(screen.getByTestId(`${testId}-professorEmail`)).toBeInTheDocument();
     expect(screen.getByTestId(`${testId}-explanation`)).toBeInTheDocument();
     expect(screen.getByTestId(`${testId}-dateRequested`)).toBeInTheDocument();
