@@ -76,7 +76,7 @@ public class RecommendationRequestIT {
     assertEquals("student@ucsb.edu", result.getRequesterEmail());
     assertEquals("prof@ucsb.edu", result.getProfessorEmail());
     assertEquals("Graduate school application", result.getExplanation());
-    assertEquals(false, result.isDone());
+    assertEquals(false, result.getDone());
   }
 
   @WithMockUser(roles = {"ADMIN", "USER"})
@@ -104,6 +104,6 @@ public class RecommendationRequestIT {
     assertEquals("student@ucsb.edu", result.getRequesterEmail());
     assertEquals("prof@ucsb.edu", result.getProfessorEmail());
     assertEquals("Graduate school application", result.getExplanation());
-    assertEquals(false, result.isDone());
+    assertEquals(false, result.getDone());
   }
 }
