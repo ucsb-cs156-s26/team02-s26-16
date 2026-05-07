@@ -12,6 +12,7 @@ import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.services.CurrentUserService;
 import edu.ucsb.cs156.example.services.GrantedAuthoritiesService;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,8 @@ public class RecommendationRequestIT {
             .requesterEmail("student@ucsb.edu")
             .professorEmail("prof@ucsb.edu")
             .explanation("Graduate school application")
-            .dateRequested("2026-05-13T00:00:00")
-            .dateNeeded("2026-06-19T00:00:00")
+            .dateRequested(LocalDateTime.now())
+            .dateNeeded(LocalDateTime.now().plusDays(7))
             .done(false)
             .build();
 
