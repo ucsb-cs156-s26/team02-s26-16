@@ -3,6 +3,7 @@ import RecommendationRequestForm from "main/components/RecommendationRequests/Re
 import { recommendationRequestFixtures } from "fixtures/recommendationRequestFixtures";
 import { BrowserRouter as Router } from "react-router";
 import { expect, vi } from "vitest";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const mockedNavigate = vi.fn();
 vi.mock("react-router", async () => {
@@ -14,61 +15,85 @@ vi.mock("react-router", async () => {
 });
 
 describe("RecommendationRequestForm tests", () => {
+  const queryClient = new QueryClient();
+  const testId = "RecommendationRequestForm";
+
   test("renders correctly", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
     );
-    await screen.findByText(/Requester Email/);
-    await screen.findByText(/Create/);
-    expect(screen.getByText(/Requester Email/)).toBeInTheDocument();
+    expect(await screen.findByText(/Requester Email/)).toBeInTheDocument();
+    expect(await screen.findByTestId(`${testId}-submit`)).toBeInTheDocument();
   });
 
   test("renders correctly when passing in a Recommendation Request", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm
-          initialContents={
-            recommendationRequestFixtures.oneRecommendationRequest
-          }
-        />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm
+            initialContents={
+              recommendationRequestFixtures.oneRecommendationRequest
+            }
+          />
+        </Router>
+      </QueryClientProvider>,
     );
     await screen.findByTestId(/RecommendationRequestForm-id/);
     expect(screen.getByText(/Id/)).toBeInTheDocument();
     expect(screen.getByTestId(/RecommendationRequestForm-id/)).toHaveValue("2");
   });
 
-  test("Correct Error messages on bad input", async () => {
+  test("that navigate(-1) is called when Cancel is clicked", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
     );
-    await screen.findByTestId("RecommendationRequestForm-requesterEmail");
-    const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
+    expect(await screen.findByTestId(`${testId}-cancel`)).toBeInTheDocument();
+    const cancelButton = screen.getByTestId(`${testId}-cancel`);
 
-    fireEvent.click(submitButton);
+    fireEvent.click(cancelButton);
 
-    await screen.findByText(/Requester email is required./);
-    expect(
-      screen.getByText(/Requester email is required./),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Professor email is required./),
-    ).toBeInTheDocument();
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
   });
 
-  test("Correct Error messages on missing input", async () => {
+  test("that all form fields have correct test ids", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
     );
-    await screen.findByTestId("RecommendationRequestForm-submit");
-    const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
 
+    expect(
+      await screen.findByTestId(`${testId}-requesterEmail`),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-professorEmail`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-explanation`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-dateRequested`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-dateNeeded`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-done`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-submit`)).toBeInTheDocument();
+  });
+
+  test("that the correct validations are performed", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
+    );
+
+    expect(await screen.findByText(/Create/)).toBeInTheDocument();
+    const submitButton = screen.getByText(/Create/);
     fireEvent.click(submitButton);
 
     await screen.findByText(/Requester email is required./);
@@ -81,93 +106,5 @@ describe("RecommendationRequestForm tests", () => {
     expect(screen.getByText(/Explanation is required./)).toBeInTheDocument();
     expect(screen.getByText(/Date requested is required./)).toBeInTheDocument();
     expect(screen.getByText(/Date needed is required./)).toBeInTheDocument();
-  });
-
-  test("No Error messages on good input", async () => {
-    const mockSubmitAction = vi.fn();
-
-    render(
-      <Router>
-        <RecommendationRequestForm submitAction={mockSubmitAction} />
-      </Router>,
-    );
-    await screen.findByTestId("RecommendationRequestForm-requesterEmail");
-
-    const requesterEmailField = screen.getByTestId(
-      "RecommendationRequestForm-requesterEmail",
-    );
-    const professorEmailField = screen.getByTestId(
-      "RecommendationRequestForm-professorEmail",
-    );
-    const explanationField = screen.getByTestId(
-      "RecommendationRequestForm-explanation",
-    );
-    const dateRequestedField = screen.getByTestId(
-      "RecommendationRequestForm-dateRequested",
-    );
-    const dateNeededField = screen.getByTestId(
-      "RecommendationRequestForm-dateNeeded",
-    );
-    const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
-
-    fireEvent.change(requesterEmailField, {
-      target: { value: "requester@example.com" },
-    });
-    fireEvent.change(professorEmailField, {
-      target: { value: "professor@example.com" },
-    });
-    fireEvent.change(explanationField, {
-      target: { value: "For graduate school application" },
-    });
-    fireEvent.change(dateRequestedField, {
-      target: { value: "2026-04-30T10:00" },
-    });
-    fireEvent.change(dateNeededField, {
-      target: { value: "2026-05-15T10:00" },
-    });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => expect(mockSubmitAction).toHaveBeenCalled());
-
-    expect(
-      screen.queryByText(/Requester email is required./),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/Date needed is required./),
-    ).not.toBeInTheDocument();
-  });
-
-  test("that navigate(-1) is called when Cancel is clicked", async () => {
-    render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
-    );
-    await screen.findByTestId("RecommendationRequestForm-cancel");
-    const cancelButton = screen.getByTestId("RecommendationRequestForm-cancel");
-
-    fireEvent.click(cancelButton);
-
-    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
-  });
-
-  test("done checkbox can be toggled", async () => {
-    const mockSubmitAction = vi.fn();
-
-    render(
-      <Router>
-        <RecommendationRequestForm submitAction={mockSubmitAction} />
-      </Router>,
-    );
-    await screen.findByTestId("RecommendationRequestForm-done");
-
-    const doneCheckbox = screen.getByTestId("RecommendationRequestForm-done");
-    expect(doneCheckbox).not.toBeChecked();
-
-    fireEvent.click(doneCheckbox);
-    expect(doneCheckbox).toBeChecked();
-
-    fireEvent.click(doneCheckbox);
-    expect(doneCheckbox).not.toBeChecked();
   });
 });

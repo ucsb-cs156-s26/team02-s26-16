@@ -110,12 +110,6 @@ describe("RecommendationRequestIndexPage tests", () => {
     const explanation1 = screen.getByText("Need letter for BS/MS application.");
     expect(explanation1).toBeInTheDocument();
 
-    expect(
-      screen.getByText("Index page not yet implemented"),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Create")).toBeInTheDocument();
-    expect(screen.getByText("Edit")).toBeInTheDocument();
-
     // for non-admin users, details button is visible, but the edit and delete buttons should not be visible
     expect(
       screen.queryByTestId(
