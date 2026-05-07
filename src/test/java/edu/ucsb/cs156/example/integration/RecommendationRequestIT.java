@@ -66,7 +66,7 @@ public class RecommendationRequestIT {
     // act
     MvcResult response =
         mockMvc
-            .perform(get("/api/recommendation_request?id=1"))
+            .perform(get("/api/recommendation_requests?id=1"))
             .andExpect(status().isOk())
             .andReturn();
 
