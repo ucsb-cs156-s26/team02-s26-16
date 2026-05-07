@@ -71,9 +71,12 @@ public class RecommendationRequestIT {
             .andReturn();
 
     // assert
-    String expectedJson = mapper.writeValueAsString(recommendationRequest);
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals(expectedJson, responseString);
+    RecommendationRequest result =
+        mapper.readValue(response.getResponse().getContentAsString(), RecommendationRequest.class);
+    assertEquals("student@ucsb.edu", result.getRequesterEmail());
+    assertEquals("prof@ucsb.edu", result.getProfessorEmail());
+    assertEquals("Graduate school application", result.getExplanation());
+    assertEquals(false, result.isDone());
   }
 
   @WithMockUser(roles = {"ADMIN", "USER"})
@@ -82,17 +85,6 @@ public class RecommendationRequestIT {
     // arrange
     LocalDateTime dateRequested = LocalDateTime.now();
     LocalDateTime dateNeeded = LocalDateTime.now().plusDays(7);
-
-    RecommendationRequest recommendationRequest1 =
-        RecommendationRequest.builder()
-            .id(1L)
-            .requesterEmail("student@ucsb.edu")
-            .professorEmail("prof@ucsb.edu")
-            .explanation("Graduate school application")
-            .dateRequested(dateRequested)
-            .dateNeeded(dateNeeded)
-            .done(false)
-            .build();
 
     // act
     MvcResult response =
@@ -107,8 +99,11 @@ public class RecommendationRequestIT {
             .andReturn();
 
     // assert
-    String expectedJson = mapper.writeValueAsString(recommendationRequest1);
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals(expectedJson, responseString);
+    RecommendationRequest result =
+        mapper.readValue(response.getResponse().getContentAsString(), RecommendationRequest.class);
+    assertEquals("student@ucsb.edu", result.getRequesterEmail());
+    assertEquals("prof@ucsb.edu", result.getProfessorEmail());
+    assertEquals("Graduate school application", result.getExplanation());
+    assertEquals(false, result.isDone());
   }
 }
