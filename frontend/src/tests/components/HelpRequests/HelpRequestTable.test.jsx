@@ -208,7 +208,8 @@ describe("HelpRequestTable tests", () => {
     const currentUser = currentUserFixtures.adminUser;
 
     const axiosMock = new AxiosMockAdapter(axios);
-    axiosMock.onDelete("/api/helprequests")
+    axiosMock
+      .onDelete("/api/helprequests")
       .reply(200, { message: "Help request deleted" });
 
     // act - render the component
