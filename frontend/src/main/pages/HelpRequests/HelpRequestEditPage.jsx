@@ -7,9 +7,6 @@ import { toast } from "react-toastify";
 
 export default function HelpRequestEditPage({ storybook = false }) {
   let { id } = useParams();
-  if (storybook) {
-    id = "1"; // Use default id for storybook
-  }
 
   const {
     data: helpRequest,
@@ -21,22 +18,11 @@ export default function HelpRequestEditPage({ storybook = false }) {
     {
       // Stryker disable next-line all : GET is the default, so mutating this to "" doesn't introduce a bug
       method: "GET",
-      url: "/api/helprequests",
+      url: `/api/helprequests`,
       params: {
         id,
       },
     },
-    storybook
-      ? {
-          id: "1",
-          requesterEmail: "test@test.edu",
-          teamId: "test-team",
-          tableOrBreakoutRoom: "Table 1",
-          requestTime: "2022-01-02T12:00:00",
-          explanation: "Test explanation",
-          solved: false,
-        }
-      : [],
   );
 
   const objectToAxiosPutParams = (helpRequest) => ({
