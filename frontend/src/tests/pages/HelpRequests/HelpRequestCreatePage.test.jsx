@@ -60,7 +60,7 @@ describe("HelpRequestCreatePage tests", () => {
     });
   });
 
-  test("on submit, makes request to backend, and redirects to /helprequest", async () => {
+  test("on submit, makes request to backend, and redirects to /helprequests", async () => {
     const queryClient = new QueryClient();
     const helpRequest = {
       id: 3,
@@ -128,6 +128,6 @@ describe("HelpRequestCreatePage tests", () => {
     expect(mockToast).toBeCalledWith(
       "New help request Created - id: 3 requesterEmail: test@example.com teamId: 1 tableOrBreakoutRoom: Table 1 requestTime: 2025-10-14T12:00:00 explanation: Help needed solved: false",
     );
-    expect(mockNavigate).toBeCalledWith({ to: "/helprequest" });
+    expect(mockNavigate).toBeCalledWith({ to: "/helprequests" });
   });
 });
