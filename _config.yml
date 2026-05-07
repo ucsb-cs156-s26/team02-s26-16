@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s26/team02-s26-16
 owner: ucsb-cs156-s26
 repo_name: team02-s26-16
-pull_requests: [{"author":{"id":"U_kgDOCusDGg","is_bot":false,"login":"ikeacat2","name":"Ivy Holiday"},"headRefName":"rec_request_fixes","number":120,"title":"Minor fixes to Recommendation Request for autograder","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/120"},{"author":{"id":"U_kgDOCusDGg","is_bot":false,"login":"ikeacat2","name":"Ivy Holiday"},"headRefName":"team03_issue_107","number":118,"title":"Issue #107: Integration Tests for RecommendationRequest","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/118"}]
+pull_requests: []
