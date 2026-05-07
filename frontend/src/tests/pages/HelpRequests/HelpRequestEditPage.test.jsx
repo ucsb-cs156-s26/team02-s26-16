@@ -68,7 +68,9 @@ describe("HelpRequestsEditPage tests", () => {
         </QueryClientProvider>,
       );
       await screen.findByText("Edit Help Request");
-      expect(screen.queryByTestId("HelpRequestsForm-id")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("HelpRequestsForm-id"),
+      ).not.toBeInTheDocument();
       restoreConsole();
     });
   });
@@ -125,9 +127,13 @@ describe("HelpRequestsEditPage tests", () => {
       await screen.findByTestId("HelpRequestsForm-id");
 
       const idField = screen.getByTestId("HelpRequestsForm-id");
-      const requesterEmailField = screen.getByTestId("HelpRequestsForm-requester_email");
+      const requesterEmailField = screen.getByTestId(
+        "HelpRequestsForm-requester_email",
+      );
       const teamIdField = screen.getByLabelText("Team ID");
-      const tableOrBreakoutRoomField = screen.getByLabelText("Table or Breakout Room");
+      const tableOrBreakoutRoomField = screen.getByLabelText(
+        "Table or Breakout Room",
+      );
       const requestTimeField = screen.getByLabelText("Request Time (in UTC)");
       const explanationField = screen.getByLabelText("Explanation");
       const solvedField = screen.getByLabelText("Solved");
@@ -203,9 +209,13 @@ describe("HelpRequestsEditPage tests", () => {
       await screen.findByTestId("HelpRequestsForm-id");
 
       const idField = screen.getByTestId("HelpRequestsForm-id");
-      const requesterEmailField = screen.getByTestId("HelpRequestsForm-requester_email");
+      const requesterEmailField = screen.getByTestId(
+        "HelpRequestsForm-requester_email",
+      );
       const teamIdField = screen.getByLabelText("Team ID");
-      const tableOrBreakoutRoomField = screen.getByLabelText("Table or Breakout Room");
+      const tableOrBreakoutRoomField = screen.getByLabelText(
+        "Table or Breakout Room",
+      );
       const requestTimeField = screen.getByLabelText("Request Time (in UTC)");
       const explanationField = screen.getByLabelText("Explanation");
       const solvedField = screen.getByLabelText("Solved");
@@ -224,9 +234,15 @@ describe("HelpRequestsEditPage tests", () => {
         target: { value: "test@example.com" },
       });
       fireEvent.change(teamIdField, { target: { value: "test-team" } });
-      fireEvent.change(tableOrBreakoutRoomField, { target: { value: "Table 1" } });
-      fireEvent.change(requestTimeField, { target: { value: "2022-01-02T12:00" } });
-      fireEvent.change(explanationField, { target: { value: "Test explanation" } });
+      fireEvent.change(tableOrBreakoutRoomField, {
+        target: { value: "Table 1" },
+      });
+      fireEvent.change(requestTimeField, {
+        target: { value: "2022-01-02T12:00" },
+      });
+      fireEvent.change(explanationField, {
+        target: { value: "Test explanation" },
+      });
       fireEvent.change(solvedField, { target: { value: false } });
 
       fireEvent.click(submitButton);
