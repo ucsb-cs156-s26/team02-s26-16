@@ -3,6 +3,7 @@ import RecommendationRequestForm from "main/components/RecommendationRequests/Re
 import { recommendationRequestFixtures } from "fixtures/recommendationRequestFixtures";
 import { BrowserRouter as Router } from "react-router";
 import { expect, vi } from "vitest";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const mockedNavigate = vi.fn();
 vi.mock("react-router", async () => {
@@ -14,26 +15,31 @@ vi.mock("react-router", async () => {
 });
 
 describe("RecommendationRequestForm tests", () => {
+  const queryClient = new QueryClient();
+  const testId = "RecommendationRequestForm";
   test("renders correctly", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
     );
-    await screen.findByText(/Requester Email/);
-    await screen.findByTestId("RecommendationRequestForm-submit");
-    expect(screen.getByText(/Requester Email/)).toBeInTheDocument();
+    expect(await screen.findByText(/Requester Email/)).toBeInTheDocument();
+    expect(await screen.findByTestId(`${testId}-submit`)).toBeInTheDocument();
   });
 
   test("renders correctly when passing in a Recommendation Request", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm
-          initialContents={
-            recommendationRequestFixtures.oneRecommendationRequest
-          }
-        />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm
+            initialContents={
+              recommendationRequestFixtures.oneRecommendationRequest
+            }
+          />
+        </Router>
+      </QueryClientProvider>,
     );
     await screen.findByTestId(/RecommendationRequestForm-id/);
     expect(screen.getByText(/Id/)).toBeInTheDocument();
@@ -42,9 +48,11 @@ describe("RecommendationRequestForm tests", () => {
 
   test("Correct Error messages on bad input", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
     );
     await screen.findByTestId("RecommendationRequestForm-requesterEmail");
     const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
@@ -62,9 +70,11 @@ describe("RecommendationRequestForm tests", () => {
 
   test("Correct Error messages on missing input", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
     );
     await screen.findByTestId("RecommendationRequestForm-submit");
     const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
@@ -87,9 +97,11 @@ describe("RecommendationRequestForm tests", () => {
     const mockSubmitAction = vi.fn();
 
     render(
-      <Router>
-        <RecommendationRequestForm submitAction={mockSubmitAction} />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={mockSubmitAction} />
+        </Router>
+      </QueryClientProvider>,
     );
     await screen.findByTestId("RecommendationRequestForm-requesterEmail");
 
@@ -139,9 +151,11 @@ describe("RecommendationRequestForm tests", () => {
 
   test("that navigate(-1) is called when Cancel is clicked", async () => {
     render(
-      <Router>
-        <RecommendationRequestForm />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>,
     );
     await screen.findByTestId("RecommendationRequestForm-cancel");
     const cancelButton = screen.getByTestId("RecommendationRequestForm-cancel");
@@ -151,13 +165,29 @@ describe("RecommendationRequestForm tests", () => {
     await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
   });
 
+  test("has correct submit button testid", () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={vi.fn()} />
+        </Router>
+      </QueryClientProvider>,
+    );
+
+    const button = screen.getByTestId("RecommendationRequestForm-submit");
+
+    expect(button).toBeInTheDocument();
+  });
+
   test("done checkbox can be toggled", async () => {
     const mockSubmitAction = vi.fn();
 
     render(
-      <Router>
-        <RecommendationRequestForm submitAction={mockSubmitAction} />
-      </Router>,
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={mockSubmitAction} />
+        </Router>
+      </QueryClientProvider>,
     );
     await screen.findByTestId("RecommendationRequestForm-done");
 
