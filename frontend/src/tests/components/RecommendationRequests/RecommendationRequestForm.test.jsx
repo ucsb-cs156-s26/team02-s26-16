@@ -21,7 +21,7 @@ describe("RecommendationRequestForm tests", () => {
       </Router>,
     );
     await screen.findByText(/Requester Email/);
-    await screen.findByText(/Create/);
+    await screen.findByTestId("RecommendationRequestForm-submit");
     expect(screen.getByText(/Requester Email/)).toBeInTheDocument();
   });
 
