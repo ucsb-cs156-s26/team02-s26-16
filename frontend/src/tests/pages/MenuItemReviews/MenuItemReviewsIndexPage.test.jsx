@@ -61,9 +61,9 @@ describe("MenuItemReviewsIndexPage tests", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Create Review/)).toBeInTheDocument();
+      expect(screen.getByText(/Create New Menu Item Review/)).toBeInTheDocument();
     });
-    const button = screen.getByText(/Create Review/);
+    const button = screen.getByText(/Create New Menu Item Review/);
     expect(button).toHaveAttribute("href", "/menuitemreviews/create");
     expect(button).toHaveAttribute("style", "float: right;");
   });
@@ -94,7 +94,7 @@ describe("MenuItemReviewsIndexPage tests", () => {
       "4",
     );
 
-    const createReviewButton = screen.queryByText("Create Review");
+    const createReviewButton = screen.queryByText("Create New Menu Item Review");
     expect(createReviewButton).not.toBeInTheDocument();
 
     const itemId = screen.getByText("12");
