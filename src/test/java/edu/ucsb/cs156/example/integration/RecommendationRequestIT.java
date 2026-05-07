@@ -33,7 +33,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @ActiveProfiles("integration")
 @Import(TestConfig.class)
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class RestaurantIT {
+public class RecommendationRequestIT {
   @Autowired public CurrentUserService currentUserService;
 
   @Autowired public GrantedAuthoritiesService grantedAuthoritiesService;
@@ -50,9 +50,15 @@ public class RestaurantIT {
   @Test
   public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
     // arrange
-    // TODO: UPDATE BUILDER
     RecommendationRequest recommendationRequest =
-        RecommendationRequest.builder().name("Taco Bell").description("Mexican").build();
+        RecommendationRequest.builder()
+            .requesterEmail("student@ucsb.edu")
+            .professorEmail("prof@ucsb.edu")
+            .explanation("Graduate school application")
+            .dateRequested("2026-05-13T00:00:00")
+            .dateNeeded("2026-06-19T00:00:00")
+            .done(false)
+            .build();
 
     recommendationRequestRepository.save(recommendationRequest);
 
@@ -74,15 +80,23 @@ public class RestaurantIT {
   public void an_admin_user_can_post_a_new_recommendation_request() throws Exception {
     // arrange
 
-    RecommendationRequest recommendationRequest1 = // TODO: UPDATE
-        RecommendationRequest.builder().id(1L).name("Chipotle").description("Mexican").build();
+    RecommendationRequest recommendationRequest1 =
+        RecommendationRequest.builder()
+            .id(1L)
+            .requesterEmail("student@ucsb.edu")
+            .professorEmail("prof@ucsb.edu")
+            .explanation("Graduate school application")
+            .dateRequested("2026-05-13T00:00:00")
+            .dateNeeded("2026-06-19T00:00:00")
+            .done(false)
+            .build();
 
     // act
     MvcResult response =
         mockMvc
             .perform(
-                post("/api/recommendation_request/post?name=Chipotle&description=Mexican")
-                    .with(csrf())) // TODO: UPDATE
+                post("/api/recommendation_request/post?requesterEmail=student@ucsb.edu&?professorEmail=prof@ucsb.edu&?explanation=Graduate school application&?dateRequested=2026-05-13T00:00:00&?dateNeeded=2026-06-19T00:00:00&?done=false")
+                    .with(csrf()))
             .andExpect(status().isOk())
             .andReturn();
 
