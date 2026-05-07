@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** This is a REST controller for RecommendationRequest */
 @Tag(name = "RecommendationRequest")
-@RequestMapping("/api/recommendation_requests")
+@RequestMapping("/api/recommendationrequests")
 @RestController
 @Slf4j
 public class RecommendationRequestController extends ApiController {
