@@ -79,6 +79,8 @@ public class RecommendationRequestIT {
   @Test
   public void an_admin_user_can_post_a_new_recommendation_request() throws Exception {
     // arrange
+    LocalDateTime dateRequested = LocalDateTime.now();
+    LocalDateTime dateNeeded = LocalDateTime.now().plusDays(7);
 
     RecommendationRequest recommendationRequest1 =
         RecommendationRequest.builder()
@@ -86,8 +88,8 @@ public class RecommendationRequestIT {
             .requesterEmail("student@ucsb.edu")
             .professorEmail("prof@ucsb.edu")
             .explanation("Graduate school application")
-            .dateRequested("2026-05-13T00:00:00")
-            .dateNeeded("2026-06-19T00:00:00")
+            .dateRequested(dateRequested)
+            .dateNeeded(dateNeeded)
             .done(false)
             .build();
 
@@ -95,7 +97,10 @@ public class RecommendationRequestIT {
     MvcResult response =
         mockMvc
             .perform(
-                post("/api/recommendation_request/post?requesterEmail=student@ucsb.edu&?professorEmail=prof@ucsb.edu&?explanation=Graduate school application&?dateRequested=2026-05-13T00:00:00&?dateNeeded=2026-06-19T00:00:00&?done=false")
+                post("/api/recommendation_requests/post?requesterEmail=student@ucsb.edu&professorEmail=prof@ucsb.edu&explanation=Graduate school application&dateRequested="
+                        + dateRequested
+                        + "&dateNeeded="
+                        + dateNeeded)
                     .with(csrf()))
             .andExpect(status().isOk())
             .andReturn();
