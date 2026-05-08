@@ -66,7 +66,7 @@ public class RecommendationRequestIT {
     // act
     MvcResult response =
         mockMvc
-            .perform(get("/api/recommendation_requests?id=1"))
+            .perform(get("/api/recommendationrequests?id=1"))
             .andExpect(status().isOk())
             .andReturn();
 
@@ -90,7 +90,7 @@ public class RecommendationRequestIT {
     MvcResult response =
         mockMvc
             .perform(
-                post("/api/recommendation_requests/post?requesterEmail=student@ucsb.edu&professorEmail=prof@ucsb.edu&explanation=Graduate school application&dateRequested="
+                post("/api/recommendationrequests/post?requesterEmail=student@ucsb.edu&professorEmail=prof@ucsb.edu&explanation=Graduate school application&dateRequested="
                         + dateRequested
                         + "&dateNeeded="
                         + dateNeeded)

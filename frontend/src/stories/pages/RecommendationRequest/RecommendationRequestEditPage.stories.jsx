@@ -26,16 +26,13 @@ Default.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/recommendationrequests", () => {
+    http.get("/api/recommendationrequests?id=1", () => {
       return HttpResponse.json(
         recommendationRequestFixtures.oneRecommendationRequest,
         {
           status: 200,
         },
       );
-    }),
-    http.put("/api/recommendationrequests", () => {
-      return HttpResponse.json({}, { status: 200 });
     }),
     http.put("/api/recommendationrequests", (req) => {
       window.alert(
