@@ -50,13 +50,13 @@ public class UCSBOrganizationWebIT extends WebTestCase {
     assertThat(page.getByTestId("UCSBOrganizationTable-cell-row-0-col-orgCode")).not().isVisible();
   }
 
-  // @Test
-  // public void regular_user_cannot_create_restaurant() throws Exception {
-  //   setupUser(false);
+  @Test
+  public void regular_user_cannot_create_organization() throws Exception {
+    setupUser(true);
 
-  //   page.getByText("Restaurants").click();
+    page.getByText("UCSB Organization").click();
 
-  //   assertThat(page.getByText("Create Restaurant")).not().isVisible();
-  //   assertThat(page.getByTestId("RestaurantTable-cell-row-0-col-name")).not().isVisible();
-  // }
+    assertThat(page.getByText("Create New UCSBOrganization")).not().isVisible();
+    assertThat(page.getByTestId("RestaurantTable-cell-row-0-col-orgCode")).not().isVisible();
+  }
 }
