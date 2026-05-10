@@ -6,7 +6,7 @@ import { Navigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 
 export default function UCSBDiningCommonsMenuItemEditPage() {
-  let { id } = useParams();
+  const { id } = useParams();
 
   const {
     data: menuItem,
