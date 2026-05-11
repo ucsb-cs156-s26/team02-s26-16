@@ -6,13 +6,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.ucsb.cs156.example.entities.MenuItemReview;
-import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
+import edu.ucsb.cs156.example.entities.UCSBDiningCommonsMenuItem;
+import edu.ucsb.cs156.example.repositories.UCSBDiningCommonsMenuItemRepository;
 import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.services.CurrentUserService;
 import edu.ucsb.cs156.example.services.GrantedAuthoritiesService;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +33,12 @@ import org.springframework.test.web.servlet.MvcResult;
 @ActiveProfiles("integration")
 @Import(TestConfig.class)
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class MenuItemReviewIT {
+public class UCSBDiningCommonsMenuItemIT {
   @Autowired public CurrentUserService currentUserService;
 
   @Autowired public GrantedAuthoritiesService grantedAuthoritiesService;
 
-  @Autowired MenuItemReviewRepository menuItemReviewRepository;
+  @Autowired UCSBDiningCommonsMenuItemRepository ucsbDiningCommonsMenuItemRepository;
 
   @Autowired public MockMvc mockMvc;
 
@@ -50,59 +49,49 @@ public class MenuItemReviewIT {
   @WithMockUser(roles = {"USER"})
   @Test
   public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
-    // arrange
-
-    LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
-
-    MenuItemReview menuItemReview =
-        MenuItemReview.builder()
-            .itemId(5)
-            .reviewerEmail("johntest@test.com")
-            .stars(3)
-            .dateReviewed(ldt)
-            .comments("It was mid.")
+    UCSBDiningCommonsMenuItem menuItem =
+        UCSBDiningCommonsMenuItem.builder()
+            .diningCommonsCode("ortega")
+            .name("Chicken Tenders")
+            .station("Entree")
             .build();
 
-    menuItemReviewRepository.save(menuItemReview);
+    ucsbDiningCommonsMenuItemRepository.save(menuItem);
 
-    // act
     MvcResult response =
-        mockMvc.perform(get("/api/MenuItemReview?id=1")).andExpect(status().isOk()).andReturn();
+        mockMvc
+            .perform(get("/api/UCSBDiningCommonsMenuItem?id=" + menuItem.getId()))
+            .andExpect(status().isOk())
+            .andReturn();
 
-    // assert
-    String expectedJson = mapper.writeValueAsString(menuItemReview);
+    String expectedJson = mapper.writeValueAsString(menuItem);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
   }
 
   @WithMockUser(roles = {"ADMIN", "USER"})
   @Test
-  public void an_admin_user_can_post_a_new_review() throws Exception {
-    // arrange
-
-    LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
-
-    MenuItemReview menuItemReview1 =
-        MenuItemReview.builder()
+  public void an_admin_user_can_post_a_new_ucsbdiningcommonsmenuitem() throws Exception {
+    UCSBDiningCommonsMenuItem menuItem =
+        UCSBDiningCommonsMenuItem.builder()
             .id(1L)
-            .itemId(6)
-            .reviewerEmail("johntest@test.com")
-            .stars(3)
-            .dateReviewed(ldt)
-            .comments("It was mid.")
+            .diningCommonsCode("ortega")
+            .name("Chicken Tenders")
+            .station("Entree")
             .build();
 
-    // act
     MvcResult response =
         mockMvc
             .perform(
-                post("/api/MenuItemReview/post?itemId=6&reviewerEmail=johntest@test.com&stars=3&dateReviewed=2022-01-03T00:00:00&comments=It was mid.")
+                post("/api/UCSBDiningCommonsMenuItem/post")
+                    .param("diningCommonsCode", "ortega")
+                    .param("name", "Chicken Tenders")
+                    .param("station", "Entree")
                     .with(csrf()))
             .andExpect(status().isOk())
             .andReturn();
 
-    // assert
-    String expectedJson = mapper.writeValueAsString(menuItemReview1);
+    String expectedJson = mapper.writeValueAsString(menuItem);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
   }
