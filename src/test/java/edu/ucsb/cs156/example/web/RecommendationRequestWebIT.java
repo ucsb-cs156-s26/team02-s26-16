@@ -45,7 +45,7 @@ public class RecommendationRequestWebIT extends WebTestCase {
     page.getByTestId("RecommendationRequestForm-done").check();
     page.getByTestId("RecommendationRequestForm-submit").click();
 
-    assertThat(page.getByTestId("RecommendationRequestTable-cell-row-0-col-done")).hasText("false");
+    assertThat(page.getByTestId("RecommendationRequestTable-cell-row-0-col-done")).hasText("true");
 
     page.getByTestId("RecommendationRequestTable-cell-row-0-col-Delete-button").click();
 
