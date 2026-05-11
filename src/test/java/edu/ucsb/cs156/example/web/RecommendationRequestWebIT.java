@@ -42,21 +42,25 @@ public class RecommendationRequestWebIT extends WebTestCase {
         .isVisible();
     page.getByTestId("RecommendationRequestTable-cell-row-0-col-Edit-button").click();
     assertThat(page.getByText("Edit Recommendation Request")).isVisible();
-    page.getByTestId("RecommendationRequestForm-done").uncheck();
+    page.getByTestId("RecommendationRequestForm-done").check();
     page.getByTestId("RecommendationRequestForm-submit").click();
 
     assertThat(page.getByTestId("RecommendationRequestTable-cell-row-0-col-done")).isChecked();
 
-    // page.getByTestId("RecommendationRequestTable-cell-row-0-col-Delete-button").click();
+    page.getByTestId("RecommendationRequestTable-cell-row-0-col-Delete-button").click();
 
-    // assertThat(page.getByTestId("RecommendationRequestTable-cell-row-0-col-name")).not().isVisible();
+    assertThat(page.getByTestId("RecommendationRequestTable-cell-row-0-col-name"))
+        .not()
+        .isVisible();
   }
 
-  // @Test
-  // public void regular_user_cannot_create_recommendation_request() throws Exception {
-  // setupUser(false);
-  // page.getByText("RecommendationRequest").click();
-  // assertThat(page.getByText("Create Recommendation Request")).not().isVisible();
-  // assertThat(page.getByTestId("RecommendationRequestTable-cell-row-0-col-requesterEmail")).not().isVisible();
-  // }
+  @Test
+  public void regular_user_cannot_create_recommendation_request() throws Exception {
+    setupUser(false);
+    page.getByText("RecommendationRequest").click();
+    assertThat(page.getByText("Create Recommendation Request")).not().isVisible();
+    assertThat(page.getByTestId("RecommendationRequestTable-cell-row-0-col-requesterEmail"))
+        .not()
+        .isVisible();
+  }
 }
