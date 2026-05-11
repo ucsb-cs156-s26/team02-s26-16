@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s26/team02-s26-16
 owner: ucsb-cs156-s26
 repo_name: team02-s26-16
-pull_requests: [{"author":{"id":"U_kgDOCv6zKw","is_bot":false,"login":"JohnDSylvester","name":"John Sylvester"},"headRefName":"JS-MenuItemReview-Team03-EndToEnd","number":138,"title":"JS- added menu item review team03 end to end","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/138"}]
+pull_requests: [{"author":{"id":"U_kgDOCusDGg","is_bot":false,"login":"ikeacat2","name":"Ivy Holiday"},"headRefName":"team03_issue_26","number":139,"title":"Issue #26: End 2 End Tests for RecommendationRequest","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/139"},{"author":{"id":"U_kgDOCv6zKw","is_bot":false,"login":"JohnDSylvester","name":"John Sylvester"},"headRefName":"JS-MenuItemReview-Team03-EndToEnd","number":138,"title":"JS- added menu item review team03 end to end","url":"https://github.com/ucsb-cs156-s26/team02-s26-16/pull/138"}]
