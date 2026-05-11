@@ -22,7 +22,7 @@ public class MenuItemReviewWebIT extends WebTestCase {
 
     page.getByText("Menu Item Reviews").click();
 
-    page.getByText("Create Review").click();
+    page.getByText("Create New Menu Item Review").click();
     assertThat(page.getByText("Create New Menu Item Review")).isVisible();
     page.getByTestId("MenuItemReviewForm-itemId").fill("20");
     page.getByTestId("MenuItemReviewForm-reviewerEmail").fill("testemail@test.com");
